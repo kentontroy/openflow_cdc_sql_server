@@ -80,7 +80,7 @@ CREATE TABLE dbo.cdc_multiset_watermark (
 
 -- Initialize once per capture
 INSERT INTO dbo.cdc_multiset_watermark (capture_instance, last_lsn, last_seq, last_op)
-VALUES (N'SalesLT_Product', sys.fn_cdc_get_min_lsn(N'SalesLT_Product'), 0x00000000000000000000, 0);
+VALUES (N'dbo_cdc_multiset_state', sys.fn_cdc_get_min_lsn(N'dbo_cdc_multiset_state'), 0x00000000000000000000, 0);
 
 SELECT * FROM dbo.cdc_multiset_watermark;
 GO
