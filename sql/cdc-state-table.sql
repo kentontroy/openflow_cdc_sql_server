@@ -1,3 +1,14 @@
+/*
+ALTER TABLE dbo.cdc_multiset_state
+ADD state_rv rowversion;
+
+Existing rows get a row version value automatically
+Future inserts/updates will bump it automatically
+
+ALTER TABLE dbo.cdc_multiset_state
+ADD is_deleted bit NOT NULL
+    CONSTRAINT DF_cdc_multiset_state_is_deleted DEFAULT (0);
+*/
 
 CREATE TABLE dbo.cdc_multiset_state (
   capture_instance sysname        NOT NULL,
