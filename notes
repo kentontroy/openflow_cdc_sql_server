@@ -1,1 +1,1 @@
-jdbc:sqlserver://nifi-example.database.windows.net:1433;database=sql-db-0408286;user=kenton@nifi-example;password=3edc$RFV%TGBaz;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+jdbc:sqlserver://<SERVER URL>:1433;database=<DATABASE NAME>;user=<USER>@n<INSTANCE>;password=<PASSWORD>;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
