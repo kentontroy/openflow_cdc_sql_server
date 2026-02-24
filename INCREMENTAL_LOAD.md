@@ -1,4 +1,4 @@
-# Incremental Load: Schema Change Detection and Response
+# Incremental Load: Inner working and Schema change Detection 
 
 This document explains how the **Incremental Load** processor group in OpenFlow detects and responds to source table schema changes, and provides details about the **Create Journal Table** child processor group.
 
