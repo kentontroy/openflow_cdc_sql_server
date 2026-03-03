@@ -1,4 +1,14 @@
 {
+  "externalControllerServices" : {
+    "7953bc13-7d05-31c3-90ec-789465030bbf" : {
+      "identifier" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+      "name" : "Snowflake Connection Pool"
+    },
+    "50c96126-f1cd-3111-9aad-4b47b2856551" : {
+      "identifier" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+      "name" : "JSON Writer"
+    }
+  },
   "flow" : {
     "createdTimestamp" : 1772504016757,
     "description" : "",
@@ -7,5 +17,733 @@
     "name" : "Stream Staleness Prevention",
     "versionCount" : 0
   },
-  "latest" : false
+  "flowContents" : {
+    "comments" : "Prevents streams on Journal tables to become stale when data is not actively pushed within the data retention period. See https://docs.snowflake.com/en/user-guide/streams-intro#data-retention-period-and-staleness   ",
+    "componentType" : "PROCESS_GROUP",
+    "connections" : [ {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "3fc96483-0197-1000-b261-7630e5b94fbc",
+        "name" : "Advance Stream's STALE_AFTER",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96485-0197-1000-4803-9edf119b8dd0",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "matched" ],
+      "source" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "3fc96484-0197-1000-b11c-2ca975a53de4",
+        "name" : "Get Stream Coordinates",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 1
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "3fc96482-0197-1000-c73b-0602fc16e6ce",
+        "name" : "Check If Journal Streams Are Present",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96486-0197-1000-e463-59acfcb02dbf",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "success" ],
+      "source" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "3fc96481-0197-1000-58a2-697e6600c0b7",
+        "name" : "Fetch Journal Streams",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 2
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "3fc96484-0197-1000-b11c-2ca975a53de4",
+        "name" : "Get Stream Coordinates",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96487-0197-1000-9802-39642a1acc55",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "Journal Streams Present" ],
+      "source" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "3fc96482-0197-1000-c73b-0602fc16e6ce",
+        "name" : "Check If Journal Streams Are Present",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 3
+    } ],
+    "controllerServices" : [ ],
+    "defaultBackPressureDataSizeThreshold" : "1 GB",
+    "defaultBackPressureObjectThreshold" : 10000,
+    "defaultFlowFileExpiration" : "0 sec",
+    "executionEngine" : "INHERITED",
+    "externalControllerServiceReferences" : {
+      "7953bc13-7d05-31c3-90ec-789465030bbf" : {
+        "identifier" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+        "name" : "Snowflake Connection Pool"
+      },
+      "50c96126-f1cd-3111-9aad-4b47b2856551" : {
+        "identifier" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+        "name" : "JSON Writer"
+      }
+    },
+    "flowFileConcurrency" : "UNBOUNDED",
+    "flowFileOutboundPolicy" : "STREAM_WHEN_AVAILABLE",
+    "funnels" : [ ],
+    "identifier" : "flow-contents-group",
+    "inputPorts" : [ ],
+    "labels" : [ ],
+    "maxConcurrentTasks" : 1,
+    "name" : "Stream Staleness Prevention",
+    "outputPorts" : [ ],
+    "parameterContextName" : "SQLServer Ingestion Parameters (1)",
+    "position" : {
+      "x" : 0.0,
+      "y" : 0.0
+    },
+    "processGroups" : [ ],
+    "processors" : [ {
+      "autoTerminatedRelationships" : [ "failure" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "nifi-standard-nar",
+        "group" : "org.apache.nifi",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96481-0197-1000-58a2-697e6600c0b7",
+      "maxBackoffPeriod" : "5 mins",
+      "name" : "Fetch Journal Streams",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -216.0,
+        "y" : -680.0
+      },
+      "properties" : {
+        "Set Auto Commit" : "true",
+        "Max Wait Time" : "0 seconds",
+        "SQL Query" : "SHOW STREAMS like '%journal%' IN DATABASE #{Destination Database}",
+        "Normalize Table/Column Names" : "false",
+        "Database Connection Pooling Service" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+        "Default Decimal Scale" : "0",
+        "Fetch Size" : "0",
+        "Output Batch Size" : "0",
+        "Use Avro Logical Types" : "false",
+        "Record Writer" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+        "Default Decimal Precision" : "10",
+        "Max Rows Per Flow File" : "1"
+      },
+      "propertyDescriptors" : {
+        "Set Auto Commit" : {
+          "displayName" : "Set Auto Commit",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Set Auto Commit",
+          "sensitive" : false
+        },
+        "Max Wait Time" : {
+          "displayName" : "Max Wait Time",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Max Wait Time",
+          "sensitive" : false
+        },
+        "SQL Query" : {
+          "displayName" : "SQL Query",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "SQL Query",
+          "sensitive" : false
+        },
+        "Normalize Table/Column Names" : {
+          "displayName" : "Normalize Table/Column Names",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Normalize Table/Column Names",
+          "sensitive" : false
+        },
+        "Database Connection Pooling Service" : {
+          "displayName" : "Database Connection Pooling Service",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Database Connection Pooling Service",
+          "sensitive" : false
+        },
+        "Default Decimal Scale" : {
+          "displayName" : "Default Decimal Scale",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Default Decimal Scale",
+          "sensitive" : false
+        },
+        "SQL Post-Query" : {
+          "displayName" : "SQL Post-Query",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "SQL Post-Query",
+          "sensitive" : false
+        },
+        "Fetch Size" : {
+          "displayName" : "Fetch Size",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Fetch Size",
+          "sensitive" : false
+        },
+        "Output Batch Size" : {
+          "displayName" : "Output Batch Size",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Output Batch Size",
+          "sensitive" : false
+        },
+        "Use Avro Logical Types" : {
+          "displayName" : "Use Avro Logical Types",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Use Avro Logical Types",
+          "sensitive" : false
+        },
+        "Record Writer" : {
+          "displayName" : "Record Writer",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Record Writer",
+          "sensitive" : false
+        },
+        "SQL Pre-Query" : {
+          "displayName" : "SQL Pre-Query",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "SQL Pre-Query",
+          "sensitive" : false
+        },
+        "Default Decimal Precision" : {
+          "displayName" : "Default Decimal Precision",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Default Decimal Precision",
+          "sensitive" : false
+        },
+        "Max Rows Per Flow File" : {
+          "displayName" : "Max Rows Per Flow File",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Max Rows Per Flow File",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ "failure" ],
+      "retryCount" : 100,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "24 hours",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "org.apache.nifi.processors.standard.ExecuteSQLRecord",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ "unmatched" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "nifi-standard-nar",
+        "group" : "org.apache.nifi",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96482-0197-1000-c73b-0602fc16e6ce",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Check If Journal Streams Are Present",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -216.0,
+        "y" : -488.0
+      },
+      "properties" : {
+        "Routing Strategy" : "Route to Property name",
+        "Journal Streams Present" : "${executesql.row.count:gt(0)}"
+      },
+      "propertyDescriptors" : {
+        "Routing Strategy" : {
+          "displayName" : "Routing Strategy",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Routing Strategy",
+          "sensitive" : false
+        },
+        "Journal Streams Present" : {
+          "displayName" : "Journal Streams Present",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "Journal Streams Present",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ ],
+      "retryCount" : 10,
+      "runDurationMillis" : 25,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "org.apache.nifi.processors.standard.RouteOnAttribute",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ "failure", "success" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "nifi-standard-nar",
+        "group" : "org.apache.nifi",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96483-0197-1000-b261-7630e5b94fbc",
+      "maxBackoffPeriod" : "5 mins",
+      "name" : "Advance Stream's STALE_AFTER",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -216.0,
+        "y" : -40.0
+      },
+      "properties" : {
+        "Set Auto Commit" : "true",
+        "Max Wait Time" : "0 seconds",
+        "SQL Query" : "select SYSTEM$STREAM_HAS_DATA('\\\"${databaseName}\\\".\\\"${schemaName}\\\".\\\"${streamName}\\\"') as result",
+        "Database Connection Pooling Service" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+        "Default Decimal Scale" : "0",
+        "Fetch Size" : "0",
+        "Output Batch Size" : "0",
+        "Use Avro Logical Types" : "false",
+        "Compression Format" : "NONE",
+        "Normalize Table and Column Names" : "false",
+        "Default Decimal Precision" : "10",
+        "Content Output Strategy" : "EMPTY",
+        "Max Rows Per Flow File" : "0"
+      },
+      "propertyDescriptors" : {
+        "Set Auto Commit" : {
+          "displayName" : "Set Auto Commit",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Set Auto Commit",
+          "sensitive" : false
+        },
+        "Max Wait Time" : {
+          "displayName" : "Max Wait Time",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Max Wait Time",
+          "sensitive" : false
+        },
+        "SQL Query" : {
+          "displayName" : "SQL Query",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "SQL Query",
+          "sensitive" : false
+        },
+        "Database Connection Pooling Service" : {
+          "displayName" : "Database Connection Pooling Service",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Database Connection Pooling Service",
+          "sensitive" : false
+        },
+        "Default Decimal Scale" : {
+          "displayName" : "Default Decimal Scale",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Default Decimal Scale",
+          "sensitive" : false
+        },
+        "SQL Post-Query" : {
+          "displayName" : "SQL Post-Query",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "SQL Post-Query",
+          "sensitive" : false
+        },
+        "Fetch Size" : {
+          "displayName" : "Fetch Size",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Fetch Size",
+          "sensitive" : false
+        },
+        "Output Batch Size" : {
+          "displayName" : "Output Batch Size",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Output Batch Size",
+          "sensitive" : false
+        },
+        "Use Avro Logical Types" : {
+          "displayName" : "Use Avro Logical Types",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Use Avro Logical Types",
+          "sensitive" : false
+        },
+        "Compression Format" : {
+          "displayName" : "Compression Format",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Compression Format",
+          "sensitive" : false
+        },
+        "Normalize Table and Column Names" : {
+          "displayName" : "Normalize Table and Column Names",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Normalize Table and Column Names",
+          "sensitive" : false
+        },
+        "SQL Pre-Query" : {
+          "displayName" : "SQL Pre-Query",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "SQL Pre-Query",
+          "sensitive" : false
+        },
+        "Default Decimal Precision" : {
+          "displayName" : "Default Decimal Precision",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Default Decimal Precision",
+          "sensitive" : false
+        },
+        "Content Output Strategy" : {
+          "displayName" : "Content Output Strategy",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Content Output Strategy",
+          "sensitive" : false
+        },
+        "Max Rows Per Flow File" : {
+          "displayName" : "Max Rows Per Flow File",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Max Rows Per Flow File",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ "failure" ],
+      "retryCount" : 100,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "org.apache.nifi.processors.standard.ExecuteSQL",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ "failure", "unmatched" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "nifi-standard-nar",
+        "group" : "org.apache.nifi",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "3fc96484-0197-1000-b11c-2ca975a53de4",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Get Stream Coordinates",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -216.0,
+        "y" : -272.0
+      },
+      "properties" : {
+        "Destination" : "flowfile-attribute",
+        "databaseName" : "$.database_name",
+        "Max String Length" : "20 MB",
+        "Return Type" : "auto-detect",
+        "Null Value Representation" : "empty string",
+        "schemaName" : "$.schema_name",
+        "streamName" : "$.name",
+        "Path Not Found Behavior" : "ignore"
+      },
+      "propertyDescriptors" : {
+        "Destination" : {
+          "displayName" : "Destination",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Destination",
+          "sensitive" : false
+        },
+        "databaseName" : {
+          "displayName" : "databaseName",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "databaseName",
+          "sensitive" : false
+        },
+        "Max String Length" : {
+          "displayName" : "Max String Length",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Max String Length",
+          "sensitive" : false
+        },
+        "Return Type" : {
+          "displayName" : "Return Type",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Return Type",
+          "sensitive" : false
+        },
+        "Null Value Representation" : {
+          "displayName" : "Null Value Representation",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Null Value Representation",
+          "sensitive" : false
+        },
+        "schemaName" : {
+          "displayName" : "schemaName",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "schemaName",
+          "sensitive" : false
+        },
+        "streamName" : {
+          "displayName" : "streamName",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "streamName",
+          "sensitive" : false
+        },
+        "Path Not Found Behavior" : {
+          "displayName" : "Path Not Found Behavior",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Path Not Found Behavior",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ ],
+      "retryCount" : 10,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "org.apache.nifi.processors.standard.EvaluateJsonPath",
+      "yieldDuration" : "1 sec"
+    } ],
+    "remoteProcessGroups" : [ ],
+    "scheduledState" : "ENABLED",
+    "statelessFlowTimeout" : "1 min"
+  },
+  "flowEncodingVersion" : "1.0",
+  "latest" : false,
+  "parameterContexts" : {
+    "SQLServer Destination Parameters" : {
+      "componentType" : "PARAMETER_CONTEXT",
+      "inheritedParameterContexts" : [ ],
+      "name" : "SQLServer Destination Parameters",
+      "parameters" : [ {
+        "description" : "The database where data will be persisted. It must already exist in Snowflake",
+        "name" : "Destination Database",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "OPENFLOW_QUICKSTART_DATABASE"
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide your Snowflake account name formatted as [organization-name]-[account-name] where data will be persisted.",
+        "name" : "Snowflake Account Identifier",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "When using SPCS, use SNOWFLAKE_SESSION_TOKEN as the value for Authentication Strategy. When using BYOC, use KEY_PAIR as the value for Authentication Strategy.",
+        "name" : "Snowflake Authentication Strategy",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "SNOWFLAKE_SESSION_TOKEN"
+      }, {
+        "description" : "When using KEY_PAIR, specify the strategy for connecting to Snowflake. Possible values: STANDARD, PRIVATE_CONNECTIVITY",
+        "name" : "Snowflake Connection Strategy",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "STANDARD"
+      }, {
+        "description" : "Do not change after initial start of the connector. Determines if schema/table/column names are treated as case-sensitive or case-insensitive.\nOne of: CASE_INSENSITIVE / CASE_SENSITIVE",
+        "name" : "Snowflake Object Identifier Resolution",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "CASE_INSENSITIVE"
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide the RSA private key used for authentication. The RSA key must be formatted according to PKCS8 standards and have standard PEM headers and footers. Note that either Snowflake Private Key File or Snowflake Private Key must be defined.",
+        "name" : "Snowflake Private Key",
+        "provided" : false,
+        "sensitive" : true
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, upload the file that contains the RSA Private Key used for authentication to Snowflake, formatted according to PKCS8 standards and having standard PEM headers and footers. The header line begins with -----BEGIN PRIVATE. Select the Reference asset checkbox to upload the private key file.",
+        "name" : "Snowflake Private Key File",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide the password associated with the Snowflake Private Key File.",
+        "name" : "Snowflake Private Key Password",
+        "provided" : false,
+        "sensitive" : true
+      }, {
+        "description" : "When using Session Token for your Authentication Strategy, use your Runtime Role. You can find your Runtime Role in the Openflow UI, by going to View Details for your Runtime. When using Key Pair for your Authentication Strategy, use a valid role configured for your service user.",
+        "name" : "Snowflake Role",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "OPENFLOW_QUICKSTART_ROLE"
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide the user name used to connect to Snowflake instance.",
+        "name" : "Snowflake Username",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "",
+        "name" : "Snowflake Warehouse",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "OPENFLOW_QUICKSTART_WH"
+      } ]
+    },
+    "SQLServer Ingestion Parameters (1)" : {
+      "componentType" : "PARAMETER_CONTEXT",
+      "inheritedParameterContexts" : [ "SQLServer Destination Parameters", "SQLServer Source Parameters" ],
+      "name" : "SQLServer Ingestion Parameters (1)",
+      "parameters" : [ {
+        "description" : "A JSON specifying which columns and column patterns should be included or excluded from replication, per table. Takes the form of an array with one object per table, e.g. [ {\"database\": \"DB1\", \"schema\":\"public\", \"table\":\"table1\", \"includedPattern\":\".*name\"} ] - this will include all columns that end with 'name' in the 'table1' from the 'public' schema in database DB1.",
+        "name" : "Column Filter JSON",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "[]"
+      }, {
+        "description" : "A comma-separated list of fully-qualified table names that should be replicated. The format should be <database>.<schema name>.<table name>. If names are case sensitive or contain special characters - they should be quoted. For example: \"db1\".\"public\".\"table1\", DB2.SCHEMA2.\"table2\", \"db3\".\"public\".\"table3\"",
+        "name" : "Included Table Names",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "\"nifi\".\"dbo\".\"test_sales_events\""
+      }, {
+        "description" : "A Regular Expression that can be matched against table names to determine if the table should be included. The Regular Expression should match the fully qualified table name: <database>.<schema>.<table>. For example, to include all tables in the DB1 database and \"public\" schema, use DB1\\.public\\..*",
+        "name" : "Included Table Regex",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "Determine if snapshot load should be skipped and only incremental CDC phase should take place. If set to \"incremental\" current database rows will not be replicated (snapshot will be skipped) and only new changes will be applied. Default value is \"full\" which means both snapshot and incremental will be performed.",
+        "name" : "Ingestion Type",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "incremental"
+      }, {
+        "description" : "CRON expression defining periods when merge operations from Journal to Destination Table will be triggered. Set it to * * * * * ? if you want to have continuous merge or time schedule to limitate warehouse run time.\nFor example:\n• The string * 0 * * * ? indicates that you want to schedule merges at full hour for one minute\n• The string * 20 14 ? * MON-FRI indicates that you want to schedule merges at 2:20 PM every Monday through Friday.\nFor additional information and examples, see the cron triggers tutorial in the Quartz Documentation https://www.quartz-scheduler.org/documentation/quartz-2.2.2/tutorials/tutorial-lesson-06.html",
+        "name" : "Merge Task Schedule CRON",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "* * * * * ?"
+      }, {
+        "description" : "Only applicable when 'Starting Change Tracking Position' is set to 'Earliest'. Choose whether re-reading events from the earliest position should include tables in any active state (set 'Any active'), or new tables only (set 'New').",
+        "name" : "Re-read Tables in State",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "New"
+      }, {
+        "description" : "Position from which to start reading the change tracking. 'Latest' is the default, starts from the last available position. 'Earliest' starts from the oldest available position. If a running connector is switched to the 'Earliest' position after it has been running earlier, it will re-read events from the start of the binlog. While this re-reading proceeds, it cannot be cancelled.",
+        "name" : "Starting Change Tracking Position",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "Latest"
+      } ]
+    },
+    "SQLServer Source Parameters" : {
+      "componentType" : "PARAMETER_CONTEXT",
+      "inheritedParameterContexts" : [ ],
+      "name" : "SQLServer Source Parameters",
+      "parameters" : [ {
+        "description" : "The JDBC Connection URL",
+        "name" : "SQLServer Connection URL",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "jdbc:sqlserver://nifi.database.windows.net:1433;database=nifi;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+      }, {
+        "description" : "The JDBC Driver JAR File reference. Download the jar from its website, then select the 'Reference asset' checkbox to upload and attach it.",
+        "name" : "SQLServer JDBC Driver",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "The password for interacting with SQLServer",
+        "name" : "SQLServer Password",
+        "provided" : false,
+        "sensitive" : true
+      }, {
+        "description" : "The username for interacting with SQLServer",
+        "name" : "SQLServer Username",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "kenton@nifi"
+      } ]
+    }
+  },
+  "parameterProviders" : { },
+  "snapshotMetadata" : {
+    "author" : "KENDAVIS",
+    "flowIdentifier" : "Stream-Staleness-Prevention",
+    "timestamp" : 1772504017202
+  }
 }
