@@ -1,4 +1,38 @@
 {
+  "externalControllerServices" : {
+    "a9d0fce7-8560-33f6-8ed0-992949862808" : {
+      "identifier" : "a9d0fce7-8560-33f6-8ed0-992949862808",
+      "name" : "Snowflake Private Key Service"
+    },
+    "7953bc13-7d05-31c3-90ec-789465030bbf" : {
+      "identifier" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+      "name" : "Snowflake Connection Pool"
+    },
+    "1d805b66-4a8a-3fb2-a7c9-0876eb122423" : {
+      "identifier" : "1d805b66-4a8a-3fb2-a7c9-0876eb122423",
+      "name" : "Table Column Filter"
+    },
+    "a72a2452-e286-3ab0-a350-c1f7d6eb09ed" : {
+      "identifier" : "a72a2452-e286-3ab0-a350-c1f7d6eb09ed",
+      "name" : "Source Table Schema Registry"
+    },
+    "24cdd13f-c206-3d50-bfc2-d29011a189ca" : {
+      "identifier" : "24cdd13f-c206-3d50-bfc2-d29011a189ca",
+      "name" : "JSON Reader"
+    },
+    "50c96126-f1cd-3111-9aad-4b47b2856551" : {
+      "identifier" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+      "name" : "JSON Writer"
+    },
+    "a7df0df5-64ea-391c-9990-5b089d4eea95" : {
+      "identifier" : "a7df0df5-64ea-391c-9990-5b089d4eea95",
+      "name" : "SQLServer Connection Pool"
+    },
+    "bff543d5-cd9c-351a-aed7-363735fb0803" : {
+      "identifier" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+      "name" : "Table State Store"
+    }
+  },
   "flow" : {
     "createdTimestamp" : 1772503846582,
     "description" : "",
@@ -7,5 +41,3591 @@
     "name" : "Snapshot Load",
     "versionCount" : 0
   },
-  "latest" : false
+  "flowContents" : {
+    "comments" : "Starts or stops the replication of tables, and performs the initial snapshot load of data from newly added tables.",
+    "componentType" : "PROCESS_GROUP",
+    "connections" : [ {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ {
+        "x" : 189.0,
+        "y" : -209.0
+      }, {
+        "x" : 189.0,
+        "y" : -159.0
+      } ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "930fe9ca-0aeb-320c-839b-cdeeed713fbe",
+        "name" : "Pick Tables For Replication",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "7a178960-1b13-350a-8e68-1dc9878dc127",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "failure" ],
+      "source" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "930fe9ca-0aeb-320c-839b-cdeeed713fbe",
+        "name" : "Pick Tables For Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 3
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ {
+        "x" : 189.0,
+        "y" : 7.0
+      }, {
+        "x" : 189.0,
+        "y" : 57.0
+      } ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "Registers tables that have been newly added to replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432c-0194-1000-3f01-2a5546ed4dec",
+        "name" : "Register New Tables for Replication",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518434b-0194-1000-3fe9-3d915e26388f",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "comms failure" ],
+      "source" : {
+        "comments" : "Registers tables that have been newly added to replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432c-0194-1000-3f01-2a5546ed4dec",
+        "name" : "Register New Tables for Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 0
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+        "id" : "95184339-0194-1000-fb3e-8418fdcc4d5a",
+        "name" : "Input",
+        "type" : "INPUT_PORT"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518434c-0194-1000-bfd4-81146d9cad3e",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "new tables",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "success" ],
+      "source" : {
+        "comments" : "Registers tables that have been newly added to replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432c-0194-1000-3f01-2a5546ed4dec",
+        "name" : "Register New Tables for Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 0
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ {
+        "x" : 958.0,
+        "y" : -213.0
+      }, {
+        "x" : 958.0,
+        "y" : -163.0
+      } ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "Removes tables from the connector's list of replicating tables.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432b-0194-1000-4900-bd76afc47222",
+        "name" : "Remove Table From Replication",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518434f-0194-1000-ad0d-6328915dc953",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "comms failure" ],
+      "source" : {
+        "comments" : "Removes tables from the connector's list of replicating tables.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432b-0194-1000-4900-bd76afc47222",
+        "name" : "Remove Table From Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 0
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "Queries the source database for a list of accessible tables, and selects the ones configured for replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432e-0194-1000-88b4-70f1cb090a2c",
+        "name" : "Verify Configured Tables",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "95184350-0194-1000-6884-6ab2d1d59ea4",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "table patterns",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "success" ],
+      "source" : {
+        "comments" : "Defines the tables or table patterns that should be included in replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432d-0194-1000-f6ca-34408c835ea6",
+        "name" : "Set Tables for Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 0
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "930fe9ca-0aeb-320c-839b-cdeeed713fbe",
+        "name" : "Pick Tables For Replication",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "b613180a-16a2-3b61-ae8f-8138adee8a2a",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "matched" ],
+      "source" : {
+        "comments" : "Queries the source database for a list of accessible tables, and selects the ones configured for replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432e-0194-1000-88b4-70f1cb090a2c",
+        "name" : "Verify Configured Tables",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 0
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "Removes tables from the connector's list of replicating tables.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432b-0194-1000-4900-bd76afc47222",
+        "name" : "Remove Table From Replication",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "bfa8d462-dba5-3145-aad6-77043c012c96",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "stale" ],
+      "source" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "930fe9ca-0aeb-320c-839b-cdeeed713fbe",
+        "name" : "Pick Tables For Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 2
+    }, {
+      "backPressureDataSizeThreshold" : "1 GB",
+      "backPressureObjectThreshold" : 10000,
+      "bends" : [ ],
+      "componentType" : "CONNECTION",
+      "destination" : {
+        "comments" : "Registers tables that have been newly added to replication.",
+        "groupId" : "flow-contents-group",
+        "id" : "9518432c-0194-1000-3f01-2a5546ed4dec",
+        "name" : "Register New Tables for Replication",
+        "type" : "PROCESSOR"
+      },
+      "flowFileExpiration" : "0 sec",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "bfceec78-3605-395f-8919-8e0a1359737a",
+      "labelIndex" : 0,
+      "loadBalanceCompression" : "DO_NOT_COMPRESS",
+      "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+      "name" : "",
+      "partitioningAttribute" : "",
+      "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+      "selectedRelationships" : [ "new" ],
+      "source" : {
+        "comments" : "",
+        "groupId" : "flow-contents-group",
+        "id" : "930fe9ca-0aeb-320c-839b-cdeeed713fbe",
+        "name" : "Pick Tables For Replication",
+        "type" : "PROCESSOR"
+      },
+      "zIndex" : 1
+    } ],
+    "controllerServices" : [ ],
+    "defaultBackPressureDataSizeThreshold" : "1 GB",
+    "defaultBackPressureObjectThreshold" : 10000,
+    "defaultFlowFileExpiration" : "0 sec",
+    "executionEngine" : "INHERITED",
+    "externalControllerServiceReferences" : {
+      "a9d0fce7-8560-33f6-8ed0-992949862808" : {
+        "identifier" : "a9d0fce7-8560-33f6-8ed0-992949862808",
+        "name" : "Snowflake Private Key Service"
+      },
+      "7953bc13-7d05-31c3-90ec-789465030bbf" : {
+        "identifier" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+        "name" : "Snowflake Connection Pool"
+      },
+      "1d805b66-4a8a-3fb2-a7c9-0876eb122423" : {
+        "identifier" : "1d805b66-4a8a-3fb2-a7c9-0876eb122423",
+        "name" : "Table Column Filter"
+      },
+      "a72a2452-e286-3ab0-a350-c1f7d6eb09ed" : {
+        "identifier" : "a72a2452-e286-3ab0-a350-c1f7d6eb09ed",
+        "name" : "Source Table Schema Registry"
+      },
+      "24cdd13f-c206-3d50-bfc2-d29011a189ca" : {
+        "identifier" : "24cdd13f-c206-3d50-bfc2-d29011a189ca",
+        "name" : "JSON Reader"
+      },
+      "50c96126-f1cd-3111-9aad-4b47b2856551" : {
+        "identifier" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+        "name" : "JSON Writer"
+      },
+      "a7df0df5-64ea-391c-9990-5b089d4eea95" : {
+        "identifier" : "a7df0df5-64ea-391c-9990-5b089d4eea95",
+        "name" : "SQLServer Connection Pool"
+      },
+      "bff543d5-cd9c-351a-aed7-363735fb0803" : {
+        "identifier" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+        "name" : "Table State Store"
+      }
+    },
+    "flowFileConcurrency" : "UNBOUNDED",
+    "flowFileOutboundPolicy" : "STREAM_WHEN_AVAILABLE",
+    "funnels" : [ ],
+    "identifier" : "flow-contents-group",
+    "inputPorts" : [ ],
+    "labels" : [ ],
+    "maxConcurrentTasks" : 1,
+    "name" : "Snapshot Load",
+    "outputPorts" : [ ],
+    "parameterContextName" : "SQLServer Ingestion Parameters (1)",
+    "position" : {
+      "x" : 0.0,
+      "y" : 0.0
+    },
+    "processGroups" : [ {
+      "comments" : "Runs the actual snapshot load for every newly-added table.",
+      "componentType" : "PROCESS_GROUP",
+      "connections" : [ {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 229.97794342041016,
+          "y" : -280.6397705078125
+        }, {
+          "x" : 229.97794342041016,
+          "y" : -228.6397705078125
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "fc7d64e0-99ae-3cd0-8f5c-9e690d668569",
+          "name" : "Add Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "15b70965-1ac7-31fd-bfa4-f72538bb264b",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "fc7d64e0-99ae-3cd0-8f5c-9e690d668569",
+          "name" : "Add Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Creates the schema for the source table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "479b2a83-6d86-3b84-a109-42b48bcccd3e",
+          "name" : "Create Snowflake Schema",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "248ca736-c979-30d9-8e7d-416a777ad69d",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "a004dfac-0199-1000-17fa-c0e51110ec3f",
+          "name" : "Determine Destination Name",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 6
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Waits until the replication state of the table indicates that the connector started collecting incremental changes for it. This ensures consistent replication of all changes to the source data made while the snapshot load is running.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184335-0194-1000-0608-860e8929c48d",
+          "name" : "Wait for Incremental Load to Begin",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "2f1f8917-6f2e-35fb-8506-c3c82d4353e2",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "2a4ae269-5347-319e-8a28-495d0b8da9ab",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 4
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184331-0194-1000-2da9-944adcd3244b",
+          "name" : "Upload Rows via Snowpipe Streaming",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "318795b3-9709-38e6-9918-eb3e3d49caf2",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ ],
+        "selectedRelationships" : [ "rows" ],
+        "source" : {
+          "comments" : "Retrieves the initial snapshot of data from the source table.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184337-0194-1000-9e3c-c0a6cf53acf1",
+          "name" : "Fetch Table Rows",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 24
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "fc7d64e0-99ae-3cd0-8f5c-9e690d668569",
+          "name" : "Add Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "3b3e7cb9-2e89-32a6-95e8-1fbd99e2e472",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "valid schema",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "matched" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "67b1dec2-dfaa-3127-b822-17d87f9bc32f",
+          "name" : "Check If Primary Key Is Present",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "a004dfac-0199-1000-17fa-c0e51110ec3f",
+          "name" : "Determine Destination Name",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "569681e4-88b0-350c-b9bd-32a4b6ca7719",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "fc7d64e0-99ae-3cd0-8f5c-9e690d668569",
+          "name" : "Add Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the replication state of the table to indicate that its snapshot load is complete.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184333-0194-1000-3e65-366e18c11dd2",
+          "name" : "Mark Snapshot Complete",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "5a5da6b6-12ad-39ad-9541-4e368e362f2e",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ ],
+        "selectedRelationships" : [ "skip snapshot" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "968e0e37-019a-1000-cc65-54d18f49fb2d",
+          "name" : "Check if Configured to Skip Snapshot",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 23
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 885.0,
+          "y" : 583.0
+        }, {
+          "x" : 885.0,
+          "y" : 633.0
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "967bb519-019a-1000-72ef-4997298be883",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "68ceb617-9c80-345a-88c9-feb137e657a6",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "967bb519-019a-1000-72ef-4997298be883",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 14
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -607.3234533071518,
+          "y" : 603.3565673828125
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "72d6dcdc-72c5-30de-b3a6-a6b119f3ab1f",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "table exists" ],
+        "source" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "2a4ae269-5347-319e-8a28-495d0b8da9ab",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 19
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 584.0,
+          "y" : 824.0
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Waits until the replication state of the table indicates that the connector started collecting incremental changes for it. This ensures consistent replication of all changes to the source data made while the snapshot load is running.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184335-0194-1000-0608-860e8929c48d",
+          "name" : "Wait for Incremental Load to Begin",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "74d33d04-7cd4-3d49-89c5-092ef2a4e5fb",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "967bb519-019a-1000-72ef-4997298be883",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 15
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 584.0,
+          "y" : 392.0
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "967bb519-019a-1000-72ef-4997298be883",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "7d61736b-6fa1-3914-b03f-c2d7b96b4699",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ ],
+        "selectedRelationships" : [ "skip snapshot" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "9676f192-019a-1000-00c1-dae9ff45d6fa",
+          "name" : "Check if Configured to Skip Snapshot",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 13
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "2a4ae269-5347-319e-8a28-495d0b8da9ab",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "8d5dae93-fd11-3e0b-8423-42af2d792aef",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "perform snapshot",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ ],
+        "selectedRelationships" : [ "unmatched" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "9676f192-019a-1000-00c1-dae9ff45d6fa",
+          "name" : "Check if Configured to Skip Snapshot",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 12
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -608.0,
+          "y" : -680.0
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9518433a-0194-1000-f9d3-71f902a0bdeb",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "table not found" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184330-0194-1000-a481-3998d93d5fff",
+          "name" : "Fetch Source Table Schema",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Removes metadata columns before the table schema is used to fetch snapshot data.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "589e424f-754a-3a11-bb27-9433ff93b7a4",
+          "name" : "Remove Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9518433c-0194-1000-6ebf-b88263870ed7",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "Waits until the replication state of the table indicates that the connector started collecting incremental changes for it. This ensures consistent replication of all changes to the source data made while the snapshot load is running.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184335-0194-1000-0608-860e8929c48d",
+          "name" : "Wait for Incremental Load to Begin",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -607.3234533071518,
+          "y" : 819.3565673828125
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9518433d-0194-1000-a2b1-84fda621315c",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "Waits until the replication state of the table indicates that the connector started collecting incremental changes for it. This ensures consistent replication of all changes to the source data made while the snapshot load is running.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184335-0194-1000-0608-860e8929c48d",
+          "name" : "Wait for Incremental Load to Begin",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 20
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184330-0194-1000-a481-3998d93d5fff",
+          "name" : "Fetch Source Table Schema",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9518433e-0194-1000-6269-fb0f4fa917ba",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "" ],
+        "source" : {
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184339-0194-1000-fb3e-8418fdcc4d5a",
+          "name" : "Input",
+          "type" : "INPUT_PORT"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -607.3234533071518,
+          "y" : 1707.363037109375
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184341-0194-1000-d2d6-b40b7e56be86",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184331-0194-1000-2da9-944adcd3244b",
+          "name" : "Upload Rows via Snowpipe Streaming",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 22
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the replication state of the table to indicate that its snapshot load is complete.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184333-0194-1000-3e65-366e18c11dd2",
+          "name" : "Mark Snapshot Complete",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184343-0194-1000-50b9-b6c61b7a2ddc",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "snapshot complete" ],
+        "source" : {
+          "comments" : "Verifies that all FlowFiles with source table rows were processed and replicated.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184338-0194-1000-659a-a25f20d39a2f",
+          "name" : "Check if All Rows Stored",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -607.3234533071518,
+          "y" : 1491.363037109375
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184344-0194-1000-0a2e-40496ca36379",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure", "retryable failure" ],
+        "source" : {
+          "comments" : "Retrieves the initial snapshot of data from the source table.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184337-0194-1000-9e3c-c0a6cf53acf1",
+          "name" : "Fetch Table Rows",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 21
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -909.9724172353745,
+          "y" : 2110.455322265625
+        }, {
+          "x" : -909.9724172353745,
+          "y" : 2166.455322265625
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184345-0194-1000-c308-7962be359b2b",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "comms failure" ],
+        "source" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "67b1dec2-dfaa-3127-b822-17d87f9bc32f",
+          "name" : "Check If Primary Key Is Present",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184347-0194-1000-0c86-1eb2b9275918",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184330-0194-1000-a481-3998d93d5fff",
+          "name" : "Fetch Source Table Schema",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 226.77788507938385,
+          "y" : 2046.7021484375
+        }, {
+          "x" : 226.77788507938385,
+          "y" : 2096.7021484375
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the replication state of the table to indicate that its snapshot load is complete.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184333-0194-1000-3e65-366e18c11dd2",
+          "name" : "Mark Snapshot Complete",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184348-0194-1000-96d6-235f7eba13d0",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "comms failure" ],
+        "source" : {
+          "comments" : "Updates the replication state of the table to indicate that its snapshot load is complete.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184333-0194-1000-3e65-366e18c11dd2",
+          "name" : "Mark Snapshot Complete",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 227.97794342041016,
+          "y" : -707.6397705078125
+        }, {
+          "x" : 227.97794342041016,
+          "y" : -657.6397705078125
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184330-0194-1000-a481-3998d93d5fff",
+          "name" : "Fetch Source Table Schema",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184349-0194-1000-ac7f-ec7949a7fd18",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184330-0194-1000-a481-3998d93d5fff",
+          "name" : "Fetch Source Table Schema",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Verifies that all FlowFiles with source table rows were processed and replicated.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184338-0194-1000-659a-a25f20d39a2f",
+          "name" : "Check if All Rows Stored",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9518434a-0194-1000-5751-a998624689cb",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184331-0194-1000-2da9-944adcd3244b",
+          "name" : "Upload Rows via Snowpipe Streaming",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "9676f192-019a-1000-00c1-dae9ff45d6fa",
+          "name" : "Check if Configured to Skip Snapshot",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9f375999-cf96-3e5e-ad7a-a935673e0e7a",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "Creates the schema for the source table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "479b2a83-6d86-3b84-a109-42b48bcccd3e",
+          "name" : "Create Snowflake Schema",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 3
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 236.5810162192056,
+          "y" : 1015.6841790887254
+        }, {
+          "x" : 236.5810162192056,
+          "y" : 1068.6841790887254
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Removes metadata columns before the table schema is used to fetch snapshot data.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "589e424f-754a-3a11-bb27-9433ff93b7a4",
+          "name" : "Remove Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "b0ef6896-da08-39a5-868f-534e1ef674c9",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "Removes metadata columns before the table schema is used to fetch snapshot data.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "589e424f-754a-3a11-bb27-9433ff93b7a4",
+          "name" : "Remove Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Retrieves the initial snapshot of data from the source table.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184337-0194-1000-9e3c-c0a6cf53acf1",
+          "name" : "Fetch Table Rows",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "ca116906-345f-313b-9045-d6d9134902b5",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "perform snapshot",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "unmatched" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "968e0e37-019a-1000-cc65-54d18f49fb2d",
+          "name" : "Check if Configured to Skip Snapshot",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 16
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "968e0e37-019a-1000-cc65-54d18f49fb2d",
+          "name" : "Check if Configured to Skip Snapshot",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "d9010a82-1d8a-35b1-94da-f3cfc13f7a26",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "Removes metadata columns before the table schema is used to fetch snapshot data.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "589e424f-754a-3a11-bb27-9433ff93b7a4",
+          "name" : "Remove Snowflake Specific Columns",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 245.52520734071732,
+          "y" : 577.5743026733398
+        }, {
+          "x" : 245.52520734071732,
+          "y" : 627.5743026733398
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "2a4ae269-5347-319e-8a28-495d0b8da9ab",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "de3b708b-388e-3c62-8bd0-5da1c78455b3",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "Creates the destination table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "2a4ae269-5347-319e-8a28-495d0b8da9ab",
+          "name" : "Create Snowflake Table",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 2
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Puts an entry in the logs indicating the completion of the snapshot load.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "78b7c6ee-f4bc-3670-bd5e-b700c010cca9",
+          "name" : "Log Snapshot Complete Message",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "ef6a80b9-02ee-37c6-bfb8-44161d7d97d6",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "success" ],
+        "source" : {
+          "comments" : "Updates the replication state of the table to indicate that its snapshot load is complete.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184333-0194-1000-3e65-366e18c11dd2",
+          "name" : "Mark Snapshot Complete",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 0
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : 247.1322528719902,
+          "y" : 160.7718276977539
+        }, {
+          "x" : 247.1322528719902,
+          "y" : 210.7718276977539
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Creates the schema for the source table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "479b2a83-6d86-3b84-a109-42b48bcccd3e",
+          "name" : "Create Snowflake Schema",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "f5330ef7-58c3-3ff0-bd09-f76f3c2c5072",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "failure" ],
+        "source" : {
+          "comments" : "Creates the schema for the source table in Snowflake.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "479b2a83-6d86-3b84-a109-42b48bcccd3e",
+          "name" : "Create Snowflake Schema",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 1
+      }, {
+        "backPressureDataSizeThreshold" : "1 GB",
+        "backPressureObjectThreshold" : 10000,
+        "bends" : [ {
+          "x" : -608.0,
+          "y" : -480.0
+        } ],
+        "componentType" : "CONNECTION",
+        "destination" : {
+          "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "95184334-0194-1000-317e-80fa71be85be",
+          "name" : "Mark Table Replication Failed",
+          "type" : "PROCESSOR"
+        },
+        "flowFileExpiration" : "0 sec",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "f6e6fc7f-aa8b-3c0d-8ba5-e494b305048d",
+        "labelIndex" : 0,
+        "loadBalanceCompression" : "DO_NOT_COMPRESS",
+        "loadBalanceStrategy" : "DO_NOT_LOAD_BALANCE",
+        "name" : "primary key missing",
+        "partitioningAttribute" : "",
+        "prioritizers" : [ "org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer" ],
+        "selectedRelationships" : [ "unmatched" ],
+        "source" : {
+          "comments" : "",
+          "groupId" : "9518432f-0194-1000-5322-994c5b575b71",
+          "id" : "67b1dec2-dfaa-3127-b822-17d87f9bc32f",
+          "name" : "Check If Primary Key Is Present",
+          "type" : "PROCESSOR"
+        },
+        "zIndex" : 18
+      } ],
+      "controllerServices" : [ ],
+      "defaultBackPressureDataSizeThreshold" : "1 GB",
+      "defaultBackPressureObjectThreshold" : 10000,
+      "defaultFlowFileExpiration" : "0 sec",
+      "executionEngine" : "INHERITED",
+      "flowFileConcurrency" : "UNBOUNDED",
+      "flowFileOutboundPolicy" : "STREAM_WHEN_AVAILABLE",
+      "funnels" : [ ],
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518432f-0194-1000-5322-994c5b575b71",
+      "inputPorts" : [ {
+        "allowRemoteAccess" : false,
+        "componentType" : "INPUT_PORT",
+        "concurrentlySchedulableTaskCount" : 1,
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184339-0194-1000-fb3e-8418fdcc4d5a",
+        "name" : "Input",
+        "portFunction" : "STANDARD",
+        "position" : {
+          "x" : -184.0,
+          "y" : -888.0
+        },
+        "scheduledState" : "ENABLED",
+        "type" : "INPUT_PORT"
+      } ],
+      "labels" : [ ],
+      "maxConcurrentTasks" : 1,
+      "name" : "Perform Snapshot Load",
+      "outputPorts" : [ ],
+      "parameterContextName" : "SQLServer Ingestion Parameters (1)",
+      "position" : {
+        "x" : -296.0,
+        "y" : 192.0
+      },
+      "processGroups" : [ ],
+      "processors" : [ {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-snowflake-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Creates the destination table in Snowflake.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "2a4ae269-5347-319e-8a28-495d0b8da9ab",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Create Snowflake Table",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 544.0
+        },
+        "properties" : {
+          "Use Table Metadata Cache" : "false",
+          "Table Name" : "${source.table.name}",
+          "Alter Column Type Strategy" : "Fail",
+          "Column Removal Strategy" : "Drop Column",
+          "Table Metadata Cache Expiration Time" : "30 sec",
+          "Update Type" : "Create Table",
+          "Max Batch Size" : "1",
+          "Object Identifier Resolution" : "#{Snowflake Object Identifier Resolution}",
+          "Include Not Null Constraints" : "true",
+          "Drop Not Null Strategy" : "Alter Table",
+          "Add Not Null Strategy" : "Alter Table",
+          "Modify Primary Key Strategy" : "Alter Table",
+          "Table Schema Strategy" : "FlowFile Content",
+          "Schema Name" : "${destination.schema.name}",
+          "Include Default Values" : "false",
+          "Drop Column Strategy" : "Alter Table",
+          "Add Column Strategy" : "Alter Table",
+          "Connection Pool" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+          "Include Primary Key Constraints" : "false"
+        },
+        "propertyDescriptors" : {
+          "Use Table Metadata Cache" : {
+            "displayName" : "Use Table Metadata Cache",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Use Table Metadata Cache",
+            "sensitive" : false
+          },
+          "Table Name" : {
+            "displayName" : "Table Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Name",
+            "sensitive" : false
+          },
+          "Alter Column Type Strategy" : {
+            "displayName" : "Alter Column Type Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Alter Column Type Strategy",
+            "sensitive" : false
+          },
+          "Column Removal Strategy" : {
+            "displayName" : "Column Removal Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Column Removal Strategy",
+            "sensitive" : false
+          },
+          "Table Metadata Cache Expiration Time" : {
+            "displayName" : "Table Metadata Cache Expiration Time",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Metadata Cache Expiration Time",
+            "sensitive" : false
+          },
+          "Update Type" : {
+            "displayName" : "Update Type",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Update Type",
+            "sensitive" : false
+          },
+          "Max Batch Size" : {
+            "displayName" : "Max Batch Size",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Max Batch Size",
+            "sensitive" : false
+          },
+          "Object Identifier Resolution" : {
+            "displayName" : "Object Identifier Resolution",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Object Identifier Resolution",
+            "sensitive" : false
+          },
+          "Include Not Null Constraints" : {
+            "displayName" : "Include Not Null Constraints",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Include Not Null Constraints",
+            "sensitive" : false
+          },
+          "Column Name Transformation" : {
+            "displayName" : "Column Name Transformation",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Column Name Transformation",
+            "sensitive" : false
+          },
+          "Removed Column Name Suffix" : {
+            "displayName" : "Removed Column Name Suffix",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Removed Column Name Suffix",
+            "sensitive" : false
+          },
+          "Drop Not Null Strategy" : {
+            "displayName" : "Drop Not Null Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Drop Not Null Strategy",
+            "sensitive" : false
+          },
+          "Add Not Null Strategy" : {
+            "displayName" : "Add Not Null Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Add Not Null Strategy",
+            "sensitive" : false
+          },
+          "Record Reader" : {
+            "displayName" : "Record Reader",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Reader",
+            "sensitive" : false
+          },
+          "Creation Parameters" : {
+            "displayName" : "Creation Parameters",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Creation Parameters",
+            "sensitive" : false
+          },
+          "Desired Schema" : {
+            "displayName" : "Desired Schema",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Desired Schema",
+            "sensitive" : false
+          },
+          "Modify Primary Key Strategy" : {
+            "displayName" : "Modify Primary Key Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Modify Primary Key Strategy",
+            "sensitive" : false
+          },
+          "Table Schema Strategy" : {
+            "displayName" : "Table Schema Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Schema Strategy",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          },
+          "Include Default Values" : {
+            "displayName" : "Include Default Values",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Include Default Values",
+            "sensitive" : false
+          },
+          "Drop Column Strategy" : {
+            "displayName" : "Drop Column Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Drop Column Strategy",
+            "sensitive" : false
+          },
+          "Add Column Strategy" : {
+            "displayName" : "Add Column Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Add Column Strategy",
+            "sensitive" : false
+          },
+          "Connection Pool" : {
+            "displayName" : "Connection Pool",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Connection Pool",
+            "sensitive" : false
+          },
+          "Include Primary Key Constraints" : {
+            "displayName" : "Include Primary Key Constraints",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Include Primary Key Constraints",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.snowflake.UpdateSnowflakeTable",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-snowflake-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Creates the schema for the source table in Snowflake.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "479b2a83-6d86-3b84-a109-42b48bcccd3e",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Create Snowflake Schema",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 120.0
+        },
+        "properties" : {
+          "Use Schema Creation Cache" : "false",
+          "Object Identifier Resolution" : "#{Snowflake Object Identifier Resolution}",
+          "Connection Pool" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+          "Schema Creation Cache Expiration Time" : "30 minutes",
+          "Schema Name" : "${destination.schema.name}"
+        },
+        "propertyDescriptors" : {
+          "Use Schema Creation Cache" : {
+            "displayName" : "Use Schema Creation Cache",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Use Schema Creation Cache",
+            "sensitive" : false
+          },
+          "Object Identifier Resolution" : {
+            "displayName" : "Object Identifier Resolution",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Object Identifier Resolution",
+            "sensitive" : false
+          },
+          "Connection Pool" : {
+            "displayName" : "Connection Pool",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Connection Pool",
+            "sensitive" : false
+          },
+          "Schema Creation Cache Expiration Time" : {
+            "displayName" : "Schema Creation Cache Expiration Time",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Creation Cache Expiration Time",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.snowflake.UpdateSnowflakeSchema",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Removes metadata columns before the table schema is used to fetch snapshot data.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "589e424f-754a-3a11-bb27-9433ff93b7a4",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Remove Snowflake Specific Columns",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 984.0
+        },
+        "properties" : {
+          "Record Writer" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+          "Record Reader" : "24cdd13f-c206-3d50-bfc2-d29011a189ca",
+          "/columns" : "arrayOf( /columns[0..-4] )",
+          "Replacement Value Strategy" : "record-path-value"
+        },
+        "propertyDescriptors" : {
+          "Record Writer" : {
+            "displayName" : "Record Writer",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Writer",
+            "sensitive" : false
+          },
+          "Record Reader" : {
+            "displayName" : "Record Reader",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Reader",
+            "sensitive" : false
+          },
+          "/columns" : {
+            "displayName" : "/columns",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "/columns",
+            "sensitive" : false
+          },
+          "Replacement Value Strategy" : {
+            "displayName" : "Replacement Value Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Replacement Value Strategy",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.UpdateRecord",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "67b1dec2-dfaa-3127-b822-17d87f9bc32f",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Check If Primary Key Is Present",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : -544.0
+        },
+        "properties" : {
+          "primaryKeyIsPresent" : "${primary.key.count:equals(0):not()}",
+          "Routing Strategy" : "Route to 'match' if all match"
+        },
+        "propertyDescriptors" : {
+          "primaryKeyIsPresent" : {
+            "displayName" : "primaryKeyIsPresent",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "primaryKeyIsPresent",
+            "sensitive" : false
+          },
+          "Routing Strategy" : {
+            "displayName" : "Routing Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Routing Strategy",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.RouteOnAttribute",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ "success" ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Puts an entry in the logs indicating the completion of the snapshot load.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "78b7c6ee-f4bc-3670-bd5e-b700c010cca9",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Log Snapshot Complete Message",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 2296.0
+        },
+        "properties" : {
+          "Log Message" : "Completed snapshot of ${source.schema.name}.${source.table.name} consisting of ${rows.total.fetched} rows in ${now():minus( ${lineageStartDate} ):divide(1000)} seconds",
+          "Log Level" : "info"
+        },
+        "propertyDescriptors" : {
+          "Log Message" : {
+            "displayName" : "Log Message",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Log Message",
+            "sensitive" : false
+          },
+          "Log Level" : {
+            "displayName" : "Log Level",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Log Level",
+            "sensitive" : false
+          },
+          "Log Prefix" : {
+            "displayName" : "Log Prefix",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Log Prefix",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.LogMessage",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-multi-database-cdc-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184330-0194-1000-a481-3998d93d5fff",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Fetch Source Table Schema",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : -744.0
+        },
+        "properties" : {
+          "Table Name" : "${source.table.name}",
+          "Database Name" : "${source.database.name}",
+          "Connection Pool" : "a7df0df5-64ea-391c-9990-5b089d4eea95",
+          "Column Filter Service" : "1d805b66-4a8a-3fb2-a7c9-0876eb122423",
+          "Schema Name" : "${source.schema.name}"
+        },
+        "propertyDescriptors" : {
+          "Table Name" : {
+            "displayName" : "Table Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Name",
+            "sensitive" : false
+          },
+          "Database Name" : {
+            "displayName" : "Database Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Database Name",
+            "sensitive" : false
+          },
+          "Connection Pool" : {
+            "displayName" : "Connection Pool",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Connection Pool",
+            "sensitive" : false
+          },
+          "Column Filter Service" : {
+            "displayName" : "Column Filter Service",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Column Filter Service",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseFetchSourceTableSchema",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "YIELD_PROCESSOR",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-snowpipe-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 2,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184331-0194-1000-2da9-944adcd3244b",
+        "maxBackoffPeriod" : "30 sec",
+        "name" : "Upload Rows via Snowpipe Streaming",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : 448.0,
+          "y" : 1648.0
+        },
+        "properties" : {
+          "Account" : "#{Snowflake Account Identifier}",
+          "User" : "#{Snowflake Username}",
+          "Table" : "\"${destination.table.name}\"",
+          "Max Batch Size" : "10000",
+          "Schema" : "\"${destination.schema.name}\"",
+          "Max Tasks Per Group" : "1",
+          "Record Offset" : "${start.row.index}",
+          "Record Reader" : "24cdd13f-c206-3d50-bfc2-d29011a189ca",
+          "Iceberg Enabled" : "false",
+          "Snowpipe Channel Index" : "1",
+          "Private Key Service" : "a9d0fce7-8560-33f6-8ed0-992949862808",
+          "Connection Strategy" : "#{Snowflake Connection Strategy}",
+          "Role" : "#{Snowflake Role}",
+          "Record Offset Strategy" : "Use Expression Language",
+          "Snowpipe Channel Prefix" : "${hostname(false)}.4",
+          "Client Lag" : "1 sec",
+          "Authentication Strategy" : "#{Snowflake Authentication Strategy}",
+          "Delivery Guarantee" : "Exactly once",
+          "Database" : "#{Destination Database}"
+        },
+        "propertyDescriptors" : {
+          "Account" : {
+            "displayName" : "Account",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Account",
+            "sensitive" : false
+          },
+          "User" : {
+            "displayName" : "User",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "User",
+            "sensitive" : false
+          },
+          "Table" : {
+            "displayName" : "Table",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table",
+            "sensitive" : false
+          },
+          "Concurrency Group" : {
+            "displayName" : "Concurrency Group",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Concurrency Group",
+            "sensitive" : false
+          },
+          "Max Batch Size" : {
+            "displayName" : "Max Batch Size",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Max Batch Size",
+            "sensitive" : false
+          },
+          "Schema" : {
+            "displayName" : "Schema",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema",
+            "sensitive" : false
+          },
+          "Max Tasks Per Group" : {
+            "displayName" : "Max Tasks Per Group",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Max Tasks Per Group",
+            "sensitive" : false
+          },
+          "Record Offset" : {
+            "displayName" : "Record Offset",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Record Offset",
+            "sensitive" : false
+          },
+          "Record Reader" : {
+            "displayName" : "Record Reader",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Reader",
+            "sensitive" : false
+          },
+          "Iceberg Enabled" : {
+            "displayName" : "Iceberg Enabled",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Iceberg Enabled",
+            "sensitive" : false
+          },
+          "Snowpipe Channel Index" : {
+            "displayName" : "Snowpipe Channel Index",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Snowpipe Channel Index",
+            "sensitive" : false
+          },
+          "Private Key Service" : {
+            "displayName" : "Private Key Service",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Private Key Service",
+            "sensitive" : false
+          },
+          "Connection Strategy" : {
+            "displayName" : "Connection Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Connection Strategy",
+            "sensitive" : false
+          },
+          "Role" : {
+            "displayName" : "Role",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Role",
+            "sensitive" : false
+          },
+          "Record Offset Strategy" : {
+            "displayName" : "Record Offset Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Record Offset Strategy",
+            "sensitive" : false
+          },
+          "Snowpipe Channel Prefix" : {
+            "displayName" : "Snowpipe Channel Prefix",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Snowpipe Channel Prefix",
+            "sensitive" : false
+          },
+          "Client Lag" : {
+            "displayName" : "Client Lag",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Client Lag",
+            "sensitive" : false
+          },
+          "Authentication Strategy" : {
+            "displayName" : "Authentication Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Authentication Strategy",
+            "sensitive" : false
+          },
+          "Delivery Guarantee" : {
+            "displayName" : "Delivery Guarantee",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Delivery Guarantee",
+            "sensitive" : false
+          },
+          "Record Offset Record Path" : {
+            "displayName" : "Record Offset Record Path",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Record Offset Record Path",
+            "sensitive" : false
+          },
+          "Database" : {
+            "displayName" : "Database",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Database",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ "failure" ],
+        "retryCount" : 10000000,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.snowpipe.PutSnowpipeStreaming",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ "state exists" ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-multi-database-cdc-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Updates the replication state of the table to indicate that its snapshot load is complete.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184333-0194-1000-3e65-366e18c11dd2",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Mark Snapshot Complete",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 2016.0
+        },
+        "properties" : {
+          "Table State Service" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+          "Table Name" : "${source.table.name}",
+          "Database Name" : "${source.database.name}",
+          "CDC Schema Registry" : "a72a2452-e286-3ab0-a350-c1f7d6eb09ed",
+          "Desired State" : "Incremental Replication",
+          "Overwrite Existing" : "true",
+          "Schema Name" : "${source.schema.name}"
+        },
+        "propertyDescriptors" : {
+          "Table State Service" : {
+            "displayName" : "Table State Service",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Table State Service",
+            "sensitive" : false
+          },
+          "Table Name" : {
+            "displayName" : "Table Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Name",
+            "sensitive" : false
+          },
+          "Database Name" : {
+            "displayName" : "Database Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Database Name",
+            "sensitive" : false
+          },
+          "CDC Schema Registry" : {
+            "displayName" : "CDC Schema Registry",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "CDC Schema Registry",
+            "sensitive" : false
+          },
+          "Desired State" : {
+            "displayName" : "Desired State",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Desired State",
+            "sensitive" : false
+          },
+          "Reason for Change" : {
+            "displayName" : "Reason for Change",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Reason for Change",
+            "sensitive" : false
+          },
+          "Overwrite Existing" : {
+            "displayName" : "Overwrite Existing",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Overwrite Existing",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseUpdateTableState",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ "state exists", "success" ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-multi-database-cdc-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Updates the table's state to \"permanently failed\" due to an unrecoverable error encountered by the connector.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184334-0194-1000-317e-80fa71be85be",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Mark Table Replication Failed",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -784.0,
+          "y" : 2088.0
+        },
+        "properties" : {
+          "Table State Service" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+          "Table Name" : "${source.table.name}",
+          "Database Name" : "${source.database.name}",
+          "CDC Schema Registry" : "a72a2452-e286-3ab0-a350-c1f7d6eb09ed",
+          "Desired State" : "Failed",
+          "Overwrite Existing" : "true",
+          "Schema Name" : "${source.schema.name}"
+        },
+        "propertyDescriptors" : {
+          "Table State Service" : {
+            "displayName" : "Table State Service",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Table State Service",
+            "sensitive" : false
+          },
+          "Table Name" : {
+            "displayName" : "Table Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Name",
+            "sensitive" : false
+          },
+          "Database Name" : {
+            "displayName" : "Database Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Database Name",
+            "sensitive" : false
+          },
+          "CDC Schema Registry" : {
+            "displayName" : "CDC Schema Registry",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "CDC Schema Registry",
+            "sensitive" : false
+          },
+          "Desired State" : {
+            "displayName" : "Desired State",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Desired State",
+            "sensitive" : false
+          },
+          "Reason for Change" : {
+            "displayName" : "Reason for Change",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Reason for Change",
+            "sensitive" : false
+          },
+          "Overwrite Existing" : {
+            "displayName" : "Overwrite Existing",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Overwrite Existing",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseUpdateTableState",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-multi-database-cdc-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Waits until the replication state of the table indicates that the connector started collecting incremental changes for it. This ensures consistent replication of all changes to the source data made while the snapshot load is running.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184335-0194-1000-0608-860e8929c48d",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Wait for Incremental Load to Begin",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 760.0
+        },
+        "properties" : {
+          "Table State Service" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+          "Accepted State" : "SNAPSHOT_REPLICATION"
+        },
+        "propertyDescriptors" : {
+          "Table State Service" : {
+            "displayName" : "Table State Service",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Table State Service",
+            "sensitive" : false
+          },
+          "Accepted State" : {
+            "displayName" : "Accepted State",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Accepted State",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseWaitForTableState",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ "complete" ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-multi-database-cdc-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Retrieves the initial snapshot of data from the source table.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184337-0194-1000-9e3c-c0a6cf53acf1",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Fetch Table Rows",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : 440.0,
+          "y" : 1432.0
+        },
+        "properties" : {
+          "JDBC Driver Location" : "#{SQLServer JDBC Driver}",
+          "Table Name" : "${source.table.name}",
+          "Database Name" : "${source.database.name}",
+          "Max Batch Size" : "100000",
+          "Record Metadata" : "SNOWFLAKE_TRACKING",
+          "Connection Pool" : "a7df0df5-64ea-391c-9990-5b089d4eea95",
+          "Record Writer" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+          "Schema Name" : "${source.schema.name}",
+          "Fetch Size" : "100"
+        },
+        "propertyDescriptors" : {
+          "JDBC Driver Location" : {
+            "displayName" : "JDBC Driver Location",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "JDBC Driver Location",
+            "resourceDefinition" : {
+              "cardinality" : "MULTIPLE",
+              "resourceTypes" : [ "DIRECTORY", "FILE", "URL" ]
+            },
+            "sensitive" : false
+          },
+          "Table Name" : {
+            "displayName" : "Table Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Name",
+            "sensitive" : false
+          },
+          "Database Name" : {
+            "displayName" : "Database Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Database Name",
+            "sensitive" : false
+          },
+          "Max Batch Size" : {
+            "displayName" : "Max Batch Size",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Max Batch Size",
+            "sensitive" : false
+          },
+          "Record Metadata" : {
+            "displayName" : "Record Metadata",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Record Metadata",
+            "sensitive" : false
+          },
+          "Connection Pool" : {
+            "displayName" : "Connection Pool",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Connection Pool",
+            "sensitive" : false
+          },
+          "Record Writer" : {
+            "displayName" : "Record Writer",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Writer",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          },
+          "Fetch Size" : {
+            "displayName" : "Fetch Size",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Fetch Size",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ "retryable failure" ],
+        "retryCount" : 1000000,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseFetchTableSnapshot",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ "unmatched" ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Verifies that all FlowFiles with source table rows were processed and replicated.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "95184338-0194-1000-659a-a25f20d39a2f",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Check if All Rows Stored",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : 448.0,
+          "y" : 1880.0
+        },
+        "properties" : {
+          "Routing Strategy" : "Route to Property name",
+          "snapshot complete" : "${snapshot.complete:equals('true')}"
+        },
+        "propertyDescriptors" : {
+          "Routing Strategy" : {
+            "displayName" : "Routing Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Routing Strategy",
+            "sensitive" : false
+          },
+          "snapshot complete" : {
+            "displayName" : "snapshot complete",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "snapshot complete",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.RouteOnAttribute",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "9676f192-019a-1000-00c1-dae9ff45d6fa",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Check if Configured to Skip Snapshot",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 328.0
+        },
+        "properties" : {
+          "Routing Strategy" : "Route to Property name",
+          "skip snapshot" : "${ingestion.type:equals(\"incremental\")}"
+        },
+        "propertyDescriptors" : {
+          "Routing Strategy" : {
+            "displayName" : "Routing Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Routing Strategy",
+            "sensitive" : false
+          },
+          "skip snapshot" : {
+            "displayName" : "skip snapshot",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "skip snapshot",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 25,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.RouteOnAttribute",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "runtime-snowflake-processors-nar",
+          "group" : "com.snowflake.openflow.runtime",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "Creates the destination table in Snowflake.",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "967bb519-019a-1000-72ef-4997298be883",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Create Snowflake Table",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : 408.0,
+          "y" : 544.0
+        },
+        "properties" : {
+          "Use Table Metadata Cache" : "false",
+          "Table Name" : "${source.table.name}",
+          "Alter Column Type Strategy" : "Fail",
+          "Column Removal Strategy" : "Drop Column",
+          "Table Metadata Cache Expiration Time" : "30 sec",
+          "Update Type" : "Create Table If Not Exists",
+          "Max Batch Size" : "1",
+          "Object Identifier Resolution" : "#{Snowflake Object Identifier Resolution}",
+          "Include Not Null Constraints" : "true",
+          "Drop Not Null Strategy" : "Alter Table",
+          "Add Not Null Strategy" : "Alter Table",
+          "Modify Primary Key Strategy" : "Alter Table",
+          "Table Schema Strategy" : "FlowFile Content",
+          "Schema Name" : "${destination.schema.name}",
+          "Include Default Values" : "false",
+          "Drop Column Strategy" : "Alter Table",
+          "Add Column Strategy" : "Alter Table",
+          "Connection Pool" : "7953bc13-7d05-31c3-90ec-789465030bbf",
+          "Include Primary Key Constraints" : "false"
+        },
+        "propertyDescriptors" : {
+          "Use Table Metadata Cache" : {
+            "displayName" : "Use Table Metadata Cache",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Use Table Metadata Cache",
+            "sensitive" : false
+          },
+          "Table Name" : {
+            "displayName" : "Table Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Name",
+            "sensitive" : false
+          },
+          "Alter Column Type Strategy" : {
+            "displayName" : "Alter Column Type Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Alter Column Type Strategy",
+            "sensitive" : false
+          },
+          "Column Removal Strategy" : {
+            "displayName" : "Column Removal Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Column Removal Strategy",
+            "sensitive" : false
+          },
+          "Table Metadata Cache Expiration Time" : {
+            "displayName" : "Table Metadata Cache Expiration Time",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Metadata Cache Expiration Time",
+            "sensitive" : false
+          },
+          "Update Type" : {
+            "displayName" : "Update Type",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Update Type",
+            "sensitive" : false
+          },
+          "Max Batch Size" : {
+            "displayName" : "Max Batch Size",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Max Batch Size",
+            "sensitive" : false
+          },
+          "Object Identifier Resolution" : {
+            "displayName" : "Object Identifier Resolution",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Object Identifier Resolution",
+            "sensitive" : false
+          },
+          "Include Not Null Constraints" : {
+            "displayName" : "Include Not Null Constraints",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Include Not Null Constraints",
+            "sensitive" : false
+          },
+          "Column Name Transformation" : {
+            "displayName" : "Column Name Transformation",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Column Name Transformation",
+            "sensitive" : false
+          },
+          "Removed Column Name Suffix" : {
+            "displayName" : "Removed Column Name Suffix",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Removed Column Name Suffix",
+            "sensitive" : false
+          },
+          "Drop Not Null Strategy" : {
+            "displayName" : "Drop Not Null Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Drop Not Null Strategy",
+            "sensitive" : false
+          },
+          "Add Not Null Strategy" : {
+            "displayName" : "Add Not Null Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Add Not Null Strategy",
+            "sensitive" : false
+          },
+          "Record Reader" : {
+            "displayName" : "Record Reader",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Reader",
+            "sensitive" : false
+          },
+          "Creation Parameters" : {
+            "displayName" : "Creation Parameters",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Creation Parameters",
+            "sensitive" : false
+          },
+          "Desired Schema" : {
+            "displayName" : "Desired Schema",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Desired Schema",
+            "sensitive" : false
+          },
+          "Modify Primary Key Strategy" : {
+            "displayName" : "Modify Primary Key Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Modify Primary Key Strategy",
+            "sensitive" : false
+          },
+          "Table Schema Strategy" : {
+            "displayName" : "Table Schema Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Table Schema Strategy",
+            "sensitive" : false
+          },
+          "Schema Name" : {
+            "displayName" : "Schema Name",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Schema Name",
+            "sensitive" : false
+          },
+          "Include Default Values" : {
+            "displayName" : "Include Default Values",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Include Default Values",
+            "sensitive" : false
+          },
+          "Drop Column Strategy" : {
+            "displayName" : "Drop Column Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Drop Column Strategy",
+            "sensitive" : false
+          },
+          "Add Column Strategy" : {
+            "displayName" : "Add Column Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Add Column Strategy",
+            "sensitive" : false
+          },
+          "Connection Pool" : {
+            "displayName" : "Connection Pool",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Connection Pool",
+            "sensitive" : false
+          },
+          "Include Primary Key Constraints" : {
+            "displayName" : "Include Primary Key Constraints",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Include Primary Key Constraints",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "com.snowflake.openflow.runtime.processors.snowflake.UpdateSnowflakeTable",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "968e0e37-019a-1000-cc65-54d18f49fb2d",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Check if Configured to Skip Snapshot",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : 1200.0
+        },
+        "properties" : {
+          "Routing Strategy" : "Route to Property name",
+          "skip snapshot" : "${ingestion.type:equals(\"incremental\")}"
+        },
+        "propertyDescriptors" : {
+          "Routing Strategy" : {
+            "displayName" : "Routing Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Routing Strategy",
+            "sensitive" : false
+          },
+          "skip snapshot" : {
+            "displayName" : "skip snapshot",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "skip snapshot",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 25,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.RouteOnAttribute",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-update-attribute-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "a004dfac-0199-1000-17fa-c0e51110ec3f",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Determine Destination Name",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : -96.0
+        },
+        "properties" : {
+          "Store State" : "Do not store state",
+          "Cache Value Lookup Cache Size" : "100",
+          "destination.schema.name" : "${#{Snowflake Object Identifier Resolution}:equals('CASE_INSENSITIVE'):ifElse('${source.database.name:toUpper()}_${source.schema.name:toUpper()}','${source.database.name}_${source.schema.name}')}",
+          "destination.table.name" : "${#{Snowflake Object Identifier Resolution}:equals('CASE_INSENSITIVE'):ifElse(${source.table.name:toUpper()},${source.table.name})}"
+        },
+        "propertyDescriptors" : {
+          "Delete Attributes Expression" : {
+            "displayName" : "Delete Attributes Expression",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Delete Attributes Expression",
+            "sensitive" : false
+          },
+          "Store State" : {
+            "displayName" : "Store State",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Store State",
+            "sensitive" : false
+          },
+          "Cache Value Lookup Cache Size" : {
+            "displayName" : "Cache Value Lookup Cache Size",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Cache Value Lookup Cache Size",
+            "sensitive" : false
+          },
+          "Stateful Variables Initial Value" : {
+            "displayName" : "Stateful Variables Initial Value",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Stateful Variables Initial Value",
+            "sensitive" : false
+          },
+          "destination.schema.name" : {
+            "displayName" : "destination.schema.name",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "destination.schema.name",
+            "sensitive" : false
+          },
+          "destination.table.name" : {
+            "displayName" : "destination.table.name",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "destination.table.name",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 25,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.attributes.UpdateAttribute",
+        "yieldDuration" : "1 sec"
+      }, {
+        "autoTerminatedRelationships" : [ ],
+        "backoffMechanism" : "PENALIZE_FLOWFILE",
+        "bulletinLevel" : "WARN",
+        "bundle" : {
+          "artifact" : "nifi-standard-nar",
+          "group" : "org.apache.nifi",
+          "version" : "2026.1.5.19"
+        },
+        "comments" : "",
+        "componentType" : "PROCESSOR",
+        "concurrentlySchedulableTaskCount" : 1,
+        "executionNode" : "ALL",
+        "groupIdentifier" : "9518432f-0194-1000-5322-994c5b575b71",
+        "identifier" : "fc7d64e0-99ae-3cd0-8f5c-9e690d668569",
+        "maxBackoffPeriod" : "10 mins",
+        "name" : "Add Snowflake Specific Columns",
+        "penaltyDuration" : "30 sec",
+        "position" : {
+          "x" : -240.0,
+          "y" : -312.0
+        },
+        "properties" : {
+          "Record Writer" : "50c96126-f1cd-3111-9aad-4b47b2856551",
+          "Record Reader" : "24cdd13f-c206-3d50-bfc2-d29011a189ca",
+          "/columns" : "arrayOf( /columns[*],\n  unescapeJson('{\"name\": \"_SNOWFLAKE_INSERTED_AT\", \"type\": \"TIMESTAMP_NTZ\", \"nullable\": false }'),\n  unescapeJson('{\"name\": \"_SNOWFLAKE_UPDATED_AT\", \"type\": \"TIMESTAMP_NTZ\", \"nullable\": false }'),\n  unescapeJson('{\"name\": \"_SNOWFLAKE_DELETED\", \"type\": \"BOOLEAN\", \"nullable\": true }')\n)",
+          "Replacement Value Strategy" : "record-path-value"
+        },
+        "propertyDescriptors" : {
+          "Record Writer" : {
+            "displayName" : "Record Writer",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Writer",
+            "sensitive" : false
+          },
+          "Record Reader" : {
+            "displayName" : "Record Reader",
+            "dynamic" : false,
+            "identifiesControllerService" : true,
+            "name" : "Record Reader",
+            "sensitive" : false
+          },
+          "/columns" : {
+            "displayName" : "/columns",
+            "dynamic" : true,
+            "identifiesControllerService" : false,
+            "name" : "/columns",
+            "sensitive" : false
+          },
+          "Replacement Value Strategy" : {
+            "displayName" : "Replacement Value Strategy",
+            "dynamic" : false,
+            "identifiesControllerService" : false,
+            "name" : "Replacement Value Strategy",
+            "sensitive" : false
+          }
+        },
+        "retriedRelationships" : [ ],
+        "retryCount" : 10,
+        "runDurationMillis" : 0,
+        "scheduledState" : "ENABLED",
+        "schedulingPeriod" : "0 sec",
+        "schedulingStrategy" : "TIMER_DRIVEN",
+        "style" : { },
+        "type" : "org.apache.nifi.processors.standard.UpdateRecord",
+        "yieldDuration" : "1 sec"
+      } ],
+      "remoteProcessGroups" : [ ],
+      "scheduledState" : "ENABLED",
+      "statelessFlowTimeout" : "1 min"
+    } ],
+    "processors" : [ {
+      "autoTerminatedRelationships" : [ "existing" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "runtime-multi-database-cdc-processors-nar",
+        "group" : "com.snowflake.openflow.runtime",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "930fe9ca-0aeb-320c-839b-cdeeed713fbe",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Pick Tables For Replication",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -280.0,
+        "y" : -248.0
+      },
+      "properties" : {
+        "Table State Service" : "bff543d5-cd9c-351a-aed7-363735fb0803"
+      },
+      "propertyDescriptors" : {
+        "Table State Service" : {
+          "displayName" : "Table State Service",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Table State Service",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ ],
+      "retryCount" : 10,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabasePickTablesForReplication",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ "state exists", "success" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "runtime-multi-database-cdc-processors-nar",
+        "group" : "com.snowflake.openflow.runtime",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "Removes tables from the connector's list of replicating tables.",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518432b-0194-1000-4900-bd76afc47222",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Remove Table From Replication",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : 488.0,
+        "y" : -248.0
+      },
+      "properties" : {
+        "Table State Service" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+        "Table Name" : "${source.table.name}",
+        "Database Name" : "${source.database.name}",
+        "CDC Schema Registry" : "a72a2452-e286-3ab0-a350-c1f7d6eb09ed",
+        "Desired State" : "Removed",
+        "Overwrite Existing" : "true",
+        "Schema Name" : "${source.schema.name}"
+      },
+      "propertyDescriptors" : {
+        "Table State Service" : {
+          "displayName" : "Table State Service",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Table State Service",
+          "sensitive" : false
+        },
+        "Table Name" : {
+          "displayName" : "Table Name",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Table Name",
+          "sensitive" : false
+        },
+        "Database Name" : {
+          "displayName" : "Database Name",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Database Name",
+          "sensitive" : false
+        },
+        "CDC Schema Registry" : {
+          "displayName" : "CDC Schema Registry",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "CDC Schema Registry",
+          "sensitive" : false
+        },
+        "Desired State" : {
+          "displayName" : "Desired State",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Desired State",
+          "sensitive" : false
+        },
+        "Reason for Change" : {
+          "displayName" : "Reason for Change",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Reason for Change",
+          "sensitive" : false
+        },
+        "Overwrite Existing" : {
+          "displayName" : "Overwrite Existing",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Overwrite Existing",
+          "sensitive" : false
+        },
+        "Schema Name" : {
+          "displayName" : "Schema Name",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Schema Name",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ "comms failure" ],
+      "retryCount" : 10,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseUpdateTableState",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ "state exists" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "runtime-multi-database-cdc-processors-nar",
+        "group" : "com.snowflake.openflow.runtime",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "Registers tables that have been newly added to replication.",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518432c-0194-1000-3f01-2a5546ed4dec",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Register New Tables for Replication",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -280.0,
+        "y" : -32.0
+      },
+      "properties" : {
+        "Table State Service" : "bff543d5-cd9c-351a-aed7-363735fb0803",
+        "Table Name" : "${source.table.name}",
+        "Database Name" : "${source.database.name}",
+        "CDC Schema Registry" : "a72a2452-e286-3ab0-a350-c1f7d6eb09ed",
+        "Desired State" : "New",
+        "Overwrite Existing" : "false",
+        "Schema Name" : "${source.schema.name}"
+      },
+      "propertyDescriptors" : {
+        "Table State Service" : {
+          "displayName" : "Table State Service",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Table State Service",
+          "sensitive" : false
+        },
+        "Table Name" : {
+          "displayName" : "Table Name",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Table Name",
+          "sensitive" : false
+        },
+        "Database Name" : {
+          "displayName" : "Database Name",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Database Name",
+          "sensitive" : false
+        },
+        "CDC Schema Registry" : {
+          "displayName" : "CDC Schema Registry",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "CDC Schema Registry",
+          "sensitive" : false
+        },
+        "Desired State" : {
+          "displayName" : "Desired State",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Desired State",
+          "sensitive" : false
+        },
+        "Reason for Change" : {
+          "displayName" : "Reason for Change",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Reason for Change",
+          "sensitive" : false
+        },
+        "Overwrite Existing" : {
+          "displayName" : "Overwrite Existing",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Overwrite Existing",
+          "sensitive" : false
+        },
+        "Schema Name" : {
+          "displayName" : "Schema Name",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Schema Name",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ ],
+      "retryCount" : 10,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseUpdateTableState",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "nifi-standard-nar",
+        "group" : "org.apache.nifi",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "Defines the tables or table patterns that should be included in replication.",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "PRIMARY",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518432d-0194-1000-f6ca-34408c835ea6",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Set Tables for Replication",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -280.0,
+        "y" : -680.0
+      },
+      "properties" : {
+        "File Size" : "0B",
+        "included.table.regex" : "#{Included Table Regex}",
+        "Batch Size" : "1",
+        "Unique FlowFiles" : "false",
+        "included.table.names" : "#{Included Table Names}",
+        "Character Set" : "UTF-8",
+        "Data Format" : "Text",
+        "ingestion.type" : "#{Ingestion Type}"
+      },
+      "propertyDescriptors" : {
+        "File Size" : {
+          "displayName" : "File Size",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "File Size",
+          "sensitive" : false
+        },
+        "included.table.regex" : {
+          "displayName" : "included.table.regex",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "included.table.regex",
+          "sensitive" : false
+        },
+        "Batch Size" : {
+          "displayName" : "Batch Size",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Batch Size",
+          "sensitive" : false
+        },
+        "Unique FlowFiles" : {
+          "displayName" : "Unique FlowFiles",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Unique FlowFiles",
+          "sensitive" : false
+        },
+        "Mime Type" : {
+          "displayName" : "Mime Type",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Mime Type",
+          "sensitive" : false
+        },
+        "included.table.names" : {
+          "displayName" : "included.table.names",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "included.table.names",
+          "sensitive" : false
+        },
+        "Custom Text" : {
+          "displayName" : "Custom Text",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Custom Text",
+          "sensitive" : false
+        },
+        "Character Set" : {
+          "displayName" : "Character Set",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Character Set",
+          "sensitive" : false
+        },
+        "Data Format" : {
+          "displayName" : "Data Format",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Data Format",
+          "sensitive" : false
+        },
+        "ingestion.type" : {
+          "displayName" : "ingestion.type",
+          "dynamic" : true,
+          "identifiesControllerService" : false,
+          "name" : "ingestion.type",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ ],
+      "retryCount" : 10,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "1 min",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "org.apache.nifi.processors.standard.GenerateFlowFile",
+      "yieldDuration" : "1 sec"
+    }, {
+      "autoTerminatedRelationships" : [ "failure" ],
+      "backoffMechanism" : "PENALIZE_FLOWFILE",
+      "bulletinLevel" : "WARN",
+      "bundle" : {
+        "artifact" : "runtime-multi-database-cdc-processors-nar",
+        "group" : "com.snowflake.openflow.runtime",
+        "version" : "2026.1.5.19"
+      },
+      "comments" : "Queries the source database for a list of accessible tables, and selects the ones configured for replication.",
+      "componentType" : "PROCESSOR",
+      "concurrentlySchedulableTaskCount" : 1,
+      "executionNode" : "ALL",
+      "groupIdentifier" : "flow-contents-group",
+      "identifier" : "9518432e-0194-1000-88b4-70f1cb090a2c",
+      "maxBackoffPeriod" : "10 mins",
+      "name" : "Verify Configured Tables",
+      "penaltyDuration" : "30 sec",
+      "position" : {
+        "x" : -280.0,
+        "y" : -464.0
+      },
+      "properties" : {
+        "Connection Pool" : "a7df0df5-64ea-391c-9990-5b089d4eea95",
+        "Included Comma Separated Source Table Names" : "${included.table.names}",
+        "Included Source Table Pattern" : "${included.table.regex}"
+      },
+      "propertyDescriptors" : {
+        "Connection Pool" : {
+          "displayName" : "Connection Pool",
+          "dynamic" : false,
+          "identifiesControllerService" : true,
+          "name" : "Connection Pool",
+          "sensitive" : false
+        },
+        "Included Comma Separated Source Table Names" : {
+          "displayName" : "Included Comma Separated Source Table Names",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Included Comma Separated Source Table Names",
+          "sensitive" : false
+        },
+        "Included Source Table Pattern" : {
+          "displayName" : "Included Source Table Pattern",
+          "dynamic" : false,
+          "identifiesControllerService" : false,
+          "name" : "Included Source Table Pattern",
+          "sensitive" : false
+        }
+      },
+      "retriedRelationships" : [ ],
+      "retryCount" : 10,
+      "runDurationMillis" : 0,
+      "scheduledState" : "ENABLED",
+      "schedulingPeriod" : "0 sec",
+      "schedulingStrategy" : "TIMER_DRIVEN",
+      "style" : { },
+      "type" : "com.snowflake.openflow.runtime.processors.database.MultiDatabaseListTableNames",
+      "yieldDuration" : "1 sec"
+    } ],
+    "remoteProcessGroups" : [ ],
+    "scheduledState" : "ENABLED",
+    "statelessFlowTimeout" : "1 min"
+  },
+  "flowEncodingVersion" : "1.0",
+  "latest" : false,
+  "parameterContexts" : {
+    "SQLServer Destination Parameters" : {
+      "componentType" : "PARAMETER_CONTEXT",
+      "inheritedParameterContexts" : [ ],
+      "name" : "SQLServer Destination Parameters",
+      "parameters" : [ {
+        "description" : "The database where data will be persisted. It must already exist in Snowflake",
+        "name" : "Destination Database",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "OPENFLOW_QUICKSTART_DATABASE"
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide your Snowflake account name formatted as [organization-name]-[account-name] where data will be persisted.",
+        "name" : "Snowflake Account Identifier",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "When using SPCS, use SNOWFLAKE_SESSION_TOKEN as the value for Authentication Strategy. When using BYOC, use KEY_PAIR as the value for Authentication Strategy.",
+        "name" : "Snowflake Authentication Strategy",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "SNOWFLAKE_SESSION_TOKEN"
+      }, {
+        "description" : "When using KEY_PAIR, specify the strategy for connecting to Snowflake. Possible values: STANDARD, PRIVATE_CONNECTIVITY",
+        "name" : "Snowflake Connection Strategy",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "STANDARD"
+      }, {
+        "description" : "Do not change after initial start of the connector. Determines if schema/table/column names are treated as case-sensitive or case-insensitive.\nOne of: CASE_INSENSITIVE / CASE_SENSITIVE",
+        "name" : "Snowflake Object Identifier Resolution",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "CASE_INSENSITIVE"
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide the RSA private key used for authentication. The RSA key must be formatted according to PKCS8 standards and have standard PEM headers and footers. Note that either Snowflake Private Key File or Snowflake Private Key must be defined.",
+        "name" : "Snowflake Private Key",
+        "provided" : false,
+        "sensitive" : true
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, upload the file that contains the RSA Private Key used for authentication to Snowflake, formatted according to PKCS8 standards and having standard PEM headers and footers. The header line begins with -----BEGIN PRIVATE. Select the Reference asset checkbox to upload the private key file.",
+        "name" : "Snowflake Private Key File",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide the password associated with the Snowflake Private Key File.",
+        "name" : "Snowflake Private Key Password",
+        "provided" : false,
+        "sensitive" : true
+      }, {
+        "description" : "When using Session Token for your Authentication Strategy, use your Runtime Role. You can find your Runtime Role in the Openflow UI, by going to View Details for your Runtime. When using Key Pair for your Authentication Strategy, use a valid role configured for your service user.",
+        "name" : "Snowflake Role",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "OPENFLOW_QUICKSTART_ROLE"
+      }, {
+        "description" : "Leave this blank when using Session Token for your Authentication Strategy. When using KEY_PAIR, provide the user name used to connect to Snowflake instance.",
+        "name" : "Snowflake Username",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "",
+        "name" : "Snowflake Warehouse",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "OPENFLOW_QUICKSTART_WH"
+      } ]
+    },
+    "SQLServer Ingestion Parameters (1)" : {
+      "componentType" : "PARAMETER_CONTEXT",
+      "inheritedParameterContexts" : [ "SQLServer Destination Parameters", "SQLServer Source Parameters" ],
+      "name" : "SQLServer Ingestion Parameters (1)",
+      "parameters" : [ {
+        "description" : "A JSON specifying which columns and column patterns should be included or excluded from replication, per table. Takes the form of an array with one object per table, e.g. [ {\"database\": \"DB1\", \"schema\":\"public\", \"table\":\"table1\", \"includedPattern\":\".*name\"} ] - this will include all columns that end with 'name' in the 'table1' from the 'public' schema in database DB1.",
+        "name" : "Column Filter JSON",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "[]"
+      }, {
+        "description" : "A comma-separated list of fully-qualified table names that should be replicated. The format should be <database>.<schema name>.<table name>. If names are case sensitive or contain special characters - they should be quoted. For example: \"db1\".\"public\".\"table1\", DB2.SCHEMA2.\"table2\", \"db3\".\"public\".\"table3\"",
+        "name" : "Included Table Names",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "\"nifi\".\"dbo\".\"test_sales_events\""
+      }, {
+        "description" : "A Regular Expression that can be matched against table names to determine if the table should be included. The Regular Expression should match the fully qualified table name: <database>.<schema>.<table>. For example, to include all tables in the DB1 database and \"public\" schema, use DB1\\.public\\..*",
+        "name" : "Included Table Regex",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "Determine if snapshot load should be skipped and only incremental CDC phase should take place. If set to \"incremental\" current database rows will not be replicated (snapshot will be skipped) and only new changes will be applied. Default value is \"full\" which means both snapshot and incremental will be performed.",
+        "name" : "Ingestion Type",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "incremental"
+      }, {
+        "description" : "CRON expression defining periods when merge operations from Journal to Destination Table will be triggered. Set it to * * * * * ? if you want to have continuous merge or time schedule to limitate warehouse run time.\nFor example:\n• The string * 0 * * * ? indicates that you want to schedule merges at full hour for one minute\n• The string * 20 14 ? * MON-FRI indicates that you want to schedule merges at 2:20 PM every Monday through Friday.\nFor additional information and examples, see the cron triggers tutorial in the Quartz Documentation https://www.quartz-scheduler.org/documentation/quartz-2.2.2/tutorials/tutorial-lesson-06.html",
+        "name" : "Merge Task Schedule CRON",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "* * * * * ?"
+      }, {
+        "description" : "Only applicable when 'Starting Change Tracking Position' is set to 'Earliest'. Choose whether re-reading events from the earliest position should include tables in any active state (set 'Any active'), or new tables only (set 'New').",
+        "name" : "Re-read Tables in State",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "New"
+      }, {
+        "description" : "Position from which to start reading the change tracking. 'Latest' is the default, starts from the last available position. 'Earliest' starts from the oldest available position. If a running connector is switched to the 'Earliest' position after it has been running earlier, it will re-read events from the start of the binlog. While this re-reading proceeds, it cannot be cancelled.",
+        "name" : "Starting Change Tracking Position",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "Latest"
+      } ]
+    },
+    "SQLServer Source Parameters" : {
+      "componentType" : "PARAMETER_CONTEXT",
+      "inheritedParameterContexts" : [ ],
+      "name" : "SQLServer Source Parameters",
+      "parameters" : [ {
+        "description" : "The JDBC Connection URL",
+        "name" : "SQLServer Connection URL",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "jdbc:sqlserver://nifi.database.windows.net:1433;database=nifi;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+      }, {
+        "description" : "The JDBC Driver JAR File reference. Download the jar from its website, then select the 'Reference asset' checkbox to upload and attach it.",
+        "name" : "SQLServer JDBC Driver",
+        "provided" : false,
+        "sensitive" : false
+      }, {
+        "description" : "The password for interacting with SQLServer",
+        "name" : "SQLServer Password",
+        "provided" : false,
+        "sensitive" : true
+      }, {
+        "description" : "The username for interacting with SQLServer",
+        "name" : "SQLServer Username",
+        "provided" : false,
+        "sensitive" : false,
+        "value" : "kenton@nifi"
+      } ]
+    }
+  },
+  "parameterProviders" : { },
+  "snapshotMetadata" : {
+    "author" : "KENDAVIS",
+    "flowIdentifier" : "Snapshot-Load",
+    "timestamp" : 1772503847078
+  }
 }
