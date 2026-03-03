@@ -1,0 +1,11 @@
+{
+  "flow" : {
+    "createdTimestamp" : 1772503941690,
+    "description" : "",
+    "identifier" : "Stream-Staleness",
+    "lastModifiedTimestamp" : 1772503941690,
+    "name" : "Stream Staleness",
+    "versionCount" : 0
+  },
+  "latest" : false
+}
