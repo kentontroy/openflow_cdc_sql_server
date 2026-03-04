@@ -1,0 +1,350 @@
+================================================================================
+PROCESSOR GROUP DESCRIPTIONS
+================================================================================
+
+================================================================================
+1. SNAPSHOT LOAD
+================================================================================
+
+The Snapshot Load processor group performs the initial full-table replication from
+the source database into Snowflake. It discovers configured tables, fetches their
+schemas, creates corresponding Snowflake objects, and bulk-loads all existing rows
+via Snowpipe Streaming before handing off to incremental replication.
+
+Steps:
+
+  1. Set Tables for Replication (GenerateFlowFile)
+     Generates an initial FlowFile containing the configured table inclusion
+     patterns and ingestion type to kick off the snapshot workflow.
+
+     -> The FlowFile with table configuration is passed to Verify Configured Tables
+        to validate which source tables match the inclusion criteria.
+
+  2. Verify Configured Tables (MultiDatabaseListTableNames)
+     Connects to the source database and lists all table names that match the
+     configured inclusion regex or explicit table name list.
+
+     -> Each matched table FlowFile is sent to Pick Tables For Replication to
+        determine whether the table is new, already tracked, or stale.
+
+  3. Pick Tables For Replication (MultiDatabasePickTablesForReplication)
+     Checks the table state service to classify each table as new (needs
+     registration), already in progress, or stale (needs removal).
+
+     -> New tables are forwarded to Register New Tables for Replication to
+        record them in the table state service; stale tables are sent to
+        Remove Table From Replication.
+
+  4. Register New Tables for Replication (MultiDatabaseUpdateTableState)
+     Registers newly discovered tables in the table state service with a
+     "New" state so they can be picked up for schema fetch and snapshot.
+
+     -> After registration, the table FlowFile enters the Perform Snapshot Load
+        sub-group via the Input port to begin the actual data replication.
+
+  5. Remove Table From Replication (MultiDatabaseUpdateTableState)
+     Marks tables that are no longer in the inclusion list as "Removed" in the
+     table state service, preventing further processing.
+
+  --- Perform Snapshot Load (sub-group) ---
+
+  6. Fetch Source Table Schema (MultiDatabaseFetchSourceTableSchema)
+     Connects to the source database and retrieves the full column schema for
+     the table, including data types and primary key information.
+
+     -> The schema FlowFile is passed to Check If Primary Key Is Present to
+        verify the table has a usable primary key for replication.
+
+  7. Check If Primary Key Is Present (RouteOnAttribute)
+     Routes tables based on whether a primary key was found in the source
+     schema; tables without a primary key cannot be replicated.
+
+     -> Tables with a primary key continue to Add Snowflake Specific Columns;
+        tables without one are routed to Mark Table Replication Failed.
+
+  8. Add Snowflake Specific Columns (UpdateRecord)
+     Appends Snowflake tracking columns (_SNOWFLAKE_INSERTED_AT,
+     _SNOWFLAKE_UPDATED_AT, _SNOWFLAKE_DELETED) to the table schema definition.
+
+     -> The enriched schema is forwarded to Determine Destination Name to
+        compute the target schema and table names in Snowflake.
+
+  9. Determine Destination Name (UpdateAttribute)
+     Computes the destination schema name (combining source database and schema)
+     and destination table name, applying case sensitivity rules as configured.
+
+     -> The FlowFile with destination coordinates proceeds to Create Snowflake
+        Schema to ensure the target schema exists.
+
+  10. Create Snowflake Schema (UpdateSnowflakeSchema)
+      Creates the destination schema in Snowflake if it does not already exist,
+      using the computed destination schema name.
+
+      -> Once the schema is confirmed, the FlowFile moves to Check if Configured
+         to Skip Snapshot to determine the next action.
+
+  11. Check if Configured to Skip Snapshot (RouteOnAttribute)
+      Routes based on the ingestion type parameter: if set to "incremental", the
+      snapshot phase is skipped; otherwise the full snapshot proceeds.
+
+      -> If skipping, the FlowFile goes directly to Create Snowflake Table (DDL
+         only) and then Mark Snapshot Complete; if not skipping, it proceeds to
+         both Create Snowflake Table and Fetch Table Rows.
+
+  12. Create Snowflake Table (UpdateSnowflakeTable)
+      Creates the destination table in Snowflake based on the source schema
+      definition, including not-null constraints but excluding primary keys.
+
+      -> After the table is created, the FlowFile is sent to Wait for
+         Incremental Load to Begin to synchronize with the incremental pipeline.
+
+  13. Fetch Table Rows (MultiDatabaseFetchTableSnapshot)
+      Reads all rows from the source table in batches, writing each batch as a
+      FlowFile with Snowflake tracking metadata embedded.
+
+      -> Each batch of rows is forwarded to Upload Rows via Snowpipe Streaming
+         for ingestion into the Snowflake destination table.
+
+  14. Upload Rows via Snowpipe Streaming (PutSnowpipeStreaming)
+      Streams row batches into the Snowflake destination table using Snowpipe
+      Streaming with exactly-once delivery guarantees.
+
+      -> After successful upload, the FlowFile is passed to Check if All Rows
+         Stored to determine whether the full snapshot is complete.
+
+  15. Check if All Rows Stored (RouteOnAttribute)
+      Evaluates the snapshot.complete attribute to determine if all rows from
+      the source table have been successfully uploaded.
+
+      -> When complete, the FlowFile proceeds to Mark Snapshot Complete; if not,
+         the flow loops back to Fetch Table Rows for the next batch.
+
+  16. Mark Snapshot Complete (MultiDatabaseUpdateTableState)
+      Updates the table state to "Incremental Replication", signaling that the
+      snapshot phase is finished and incremental CDC can begin.
+
+      -> The completion FlowFile is sent to Log Snapshot Complete Message to
+         record the snapshot summary.
+
+  17. Log Snapshot Complete Message (LogMessage)
+      Logs an informational message with the total row count and elapsed time
+      for the completed snapshot of the table.
+
+  18. Wait for Incremental Load to Begin (MultiDatabaseWaitForTableState)
+      Pauses processing until the table state service confirms the table has
+      entered the SNAPSHOT_REPLICATION state, synchronizing with the incremental
+      load pipeline.
+
+      -> Once the expected state is reached, the FlowFile continues to Remove
+         Snowflake Specific Columns for schema cleanup before the incremental
+         handoff.
+
+  19. Remove Snowflake Specific Columns (UpdateRecord)
+      Strips the Snowflake-specific tracking columns from the schema definition,
+      reverting to the original source schema for incremental processing.
+
+  20. Mark Table Replication Failed (MultiDatabaseUpdateTableState)
+      Sets the table state to "Failed" when any step in the snapshot process
+      encounters an unrecoverable error, halting further processing for that table.
+
+
+================================================================================
+2. INCREMENTAL LOAD
+================================================================================
+
+The Incremental Load processor group handles ongoing change data capture (CDC)
+after the initial snapshot. It reads change tracking events from SQL Server,
+streams changed rows into a journal table in Snowflake, and then merges those
+changes into the destination table using a stored procedure.
+
+Steps:
+
+  1. Wait for Snapshot Load to Finish (MultiDatabaseWaitForTableState)
+     Blocks incremental processing until the table state service confirms the
+     table has completed its snapshot and entered INCREMENTAL_REPLICATION state.
+
+     -> Once the snapshot is complete, the FlowFile proceeds to the CDC reader
+        to begin capturing changes.
+
+  2. Read SQLServer Change Tracking tables (MultiDatabaseCaptureChangeSqlServer)
+     Connects to SQL Server and reads change tracking events (inserts, updates,
+     deletes) for all tracked tables since the last known position.
+
+     -> Each batch of change events is sent simultaneously to Set Source Table
+        FQN (for the data path) and to the Log Activity sub-group (for logging).
+
+  3. Set Source Table FQN (UpdateAttribute)
+     Computes and sets the fully qualified source table name attribute
+     (database.schema.table) on the FlowFile for downstream routing.
+
+     -> The FlowFile with the FQN attribute is forwarded to Determine
+        Destination Name to compute the Snowflake target coordinates.
+
+  4. Determine Destination Name (UpdateAttribute)
+     Computes the destination schema and table names in Snowflake, applying
+     configured case sensitivity rules to match the naming convention.
+
+     -> The FlowFile proceeds to Merge Rows Into Bigger FlowFiles to batch
+        small change events into larger, more efficient units.
+
+  5. Merge Rows Into Bigger FlowFiles (MergeContent)
+     Bins change event FlowFiles by source table and merges them into larger
+     batches (up to 10,000 entries) for efficient Snowpipe ingestion.
+
+     -> Merged batches are sent to Process Schema Changes to detect and handle
+        any DDL changes before uploading data.
+
+  6. Process Schema Changes (MultiDatabaseEnrichCdcStream)
+     Inspects each CDC batch for schema evolution events and enriches FlowFiles
+     with the current schema generation and destination table schema metadata.
+
+     -> Data-only batches continue to Upload Rows via Snowpipe Streaming;
+        batches containing DDL changes are routed to the Create Journal Table
+        sub-group.
+
+  7. Upload Rows via Snowpipe Streaming (PutSnowpipeStreaming)
+     Streams the CDC row batches into the journal table in Snowflake using
+     Snowpipe Streaming with at-least-once delivery.
+
+     -> After successful upload, the FlowFile is sent to Remove Rows from
+        FlowFile to clear the content before scheduling the merge.
+
+  8. Remove Rows from FlowFile (ReplaceText)
+     Clears the FlowFile content after a successful Snowpipe upload, keeping
+     only the attributes needed for the merge phase.
+
+     -> The emptied FlowFile loops back to Wait for Snapshot Load to Finish
+        to re-enter the scheduling queue for the warehouse merge.
+
+  9. Schedule Warehouse (MergeContent)
+     Batches completed upload FlowFiles by source table to consolidate multiple
+     uploads into a single merge operation, reducing warehouse invocations.
+
+     -> Once a batch is ready, it is forwarded to Build Merge SQL to construct
+        the merge statement.
+
+  10. Build Merge SQL (UpdateAttribute)
+      Constructs the SQL CALL statement to invoke the MERGE_JOURNAL_TO_DESTINATION
+      stored procedure with the appropriate table name and schema generation.
+
+      -> The FlowFile with the merge SQL is passed to Merge Journal to
+         Destination for execution.
+
+  11. Merge Journal to Destination (ExecuteSQL)
+      Executes the merge stored procedure against Snowflake, which applies all
+      inserts, updates, and deletes from the journal table to the destination.
+
+      -> On success, the result is sent to the Log Activity sub-group for
+         logging; on failure, it is routed to error handling.
+
+  --- Create Journal Table (sub-group) ---
+
+  12. Convert To Journal Schema (MultiDatabaseConvertToJournalSchema)
+      Transforms the source table schema into the journal table schema format,
+      adding CDC-specific columns needed for change tracking.
+
+      -> The journal schema is forwarded to Create Schema If Not Exists to
+         ensure the destination schema is present.
+
+  13. Create Schema If Not Exists (UpdateSnowflakeSchema)
+      Creates the destination schema in Snowflake if it does not already exist
+      to host the new journal table.
+
+      -> Once the schema is confirmed, the FlowFile proceeds to Create Journal
+         Table to build the journal table.
+
+  14. Create Journal Table (UpdateSnowflakeTable)
+      Creates the journal table in Snowflake with the schema generation suffix,
+      used as a staging area for CDC events before merging.
+
+      -> After the table is created, the FlowFile moves to Create Journal Table
+         Stream to set up change tracking on the journal.
+
+  15. Create Journal Table Stream (UpdateSnowflakeStream)
+      Creates an append-only Snowflake stream on the journal table to track
+      new rows inserted via Snowpipe Streaming.
+
+      -> On failure, the error is routed to Update Failure Reason With
+         SNOWFLAKE_OBJECT_OPERATION_FAILED for error classification.
+
+  --- Schema Change Handling ---
+
+  16. Alter Destination Table (UpdateSnowflakeTable)
+      Applies DDL changes (add columns, rename removed columns) to the
+      Snowflake destination table to keep it in sync with the source schema.
+
+      -> On success, the FlowFile proceeds to Drop First DDL to determine
+         whether the journal stream needs to be recreated.
+
+  17. Drop First DDL (RouteOnAttribute)
+      Filters out the initial schema generation DDL event that does not require
+      journal stream recreation, only routing subsequent DDL changes.
+
+      -> Schema change DDL events continue to Drop Journal Stream to clean up
+         the old stream before the new journal table is created.
+
+  18. Drop Journal Stream (UpdateSnowflakeStream)
+      Drops the existing journal table stream in preparation for creating a
+      new journal table with the updated schema generation.
+
+  --- Error Handling ---
+
+  19. Update Failure Reason With SNOWFLAKE_OBJECT_OPERATION_FAILED (UpdateAttribute)
+      Sets the failure.reason attribute to SNOWFLAKE_OBJECT_OPERATION_FAILED
+      when a Snowflake DDL or object operation fails.
+
+  20. Update Failure Reason With SNOWPIPE_UPLOAD_FAILED (UpdateAttribute)
+      Sets the failure.reason attribute to SNOWPIPE_UPLOAD_FAILED when the
+      Snowpipe Streaming upload encounters an error.
+
+  21. Update Failure Reason With CONTENT_MERGE_FAILED (UpdateAttribute)
+      Sets the failure.reason attribute to CONTENT_MERGE_FAILED when FlowFile
+      content merging fails during batching.
+
+  22. Update Failure Reason With VALUE_MAPPING_ERROR (UpdateAttribute)
+      Sets the failure.reason attribute to VALUE_MAPPING_ERROR when row content
+      clearing or value transformation fails.
+
+      -> All failure reason processors forward to Mark Replication as Failed.
+
+  23. Mark Replication as Failed (MultiDatabaseUpdateTableState)
+      Updates the table state to "Failed" with the classified failure reason,
+      halting further incremental processing for the affected table.
+
+
+================================================================================
+3. STREAM STALENESS PREVENTION
+================================================================================
+
+The Stream Staleness Prevention processor group prevents Snowflake streams on
+journal tables from going stale by periodically querying them. If a stream is
+not consumed within its STALE_AFTER window, Snowflake marks it as stale and it
+can no longer be read. This group proactively touches each stream to reset the
+staleness timer.
+
+Steps:
+
+  1. Fetch Journal Streams (ExecuteSQLRecord)
+     Executes a SHOW STREAMS command against the destination database to discover
+     all journal streams (streams with "journal" in their name).
+
+     -> Each stream record is forwarded to Check If Journal Streams Are Present
+        to verify the query returned results.
+
+  2. Check If Journal Streams Are Present (RouteOnAttribute)
+     Evaluates the row count from the SHOW STREAMS query to determine whether
+     any journal streams exist in the destination database.
+
+     -> If streams are found, each stream record is routed to Get Stream
+        Coordinates; if none are found, processing stops for this cycle.
+
+  3. Get Stream Coordinates (EvaluateJsonPath)
+     Extracts the database name, schema name, and stream name from each stream
+     record's JSON payload into FlowFile attributes.
+
+     -> The extracted coordinates are passed to Advance Stream's STALE_AFTER
+        to query the stream and reset its staleness timer.
+
+  4. Advance Stream's STALE_AFTER (ExecuteSQL)
+     Executes a SYSTEM$STREAM_HAS_DATA query against each journal stream, which
+     has the side effect of resetting the stream's staleness countdown timer.
